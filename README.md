@@ -1,6 +1,8 @@
-Object Oriented Analysis and Design
+This repository is for the course project for Object Oriented Analysis and Design (CSCI 5448)
 
-CSCI 5448
+Spring 2017
+
+
 
 University of Colorado Boulder
 
@@ -30,9 +32,13 @@ There are two main actors for this system:
 - Admin Users, who will create allocations, activate/deactivate users
 
 Functionality:
+
+
 Common Actions:
 - Login/Logout
 - See usage
+
+
 
 User Actions:
 - Upload Files/Directories
@@ -46,12 +52,15 @@ User Actions:
 - Share File
 - Search for a file
 
+
+
 Admin Actions:
 - Change permissions/roles of users
 - Activate/Deactivate users
 - Assign/Change quotas
 - Create admin account
 - Change role
+
 
 
 Stretch Functionalities:
