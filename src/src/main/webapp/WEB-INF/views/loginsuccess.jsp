@@ -12,5 +12,6 @@
 </head>
 <body>
     <h1>Login Success!</h1>
+    <h2>${user.userName}</h2>
 </body>
 </html>
