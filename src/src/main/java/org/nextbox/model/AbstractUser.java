@@ -61,4 +61,15 @@ public class AbstractUser implements Serializable {
 
     @Column(name="password")
     String password;
+
+    public String getHomeDirectory() {
+        return homeDirectory;
+    }
+
+    public void setHomeDirectory(String homeDirectory) {
+        this.homeDirectory = homeDirectory;
+    }
+
+    @Column(name="home_dir")
+    String homeDirectory;
 }

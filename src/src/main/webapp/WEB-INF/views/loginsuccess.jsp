@@ -13,5 +13,11 @@
 <body>
     <h1>Login Success!</h1>
     <h2>${user.userName}</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <p>Select a File:</p>
+        <input type="file" name="uploadedfile" />
+        <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
+        <input type="submit" value="Upload File" />
+    </form>
 </body>
 </html>

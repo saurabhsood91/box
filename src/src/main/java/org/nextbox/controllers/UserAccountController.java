@@ -45,6 +45,7 @@ public class UserAccountController {
 
             // add user object to model
             model.addAttribute("user", user);
+            model.addAttribute("currentDirectory", user.getHomeDirectory());
 
             return "loginsuccess";
         } else {
