@@ -5,6 +5,7 @@ import org.nextbox.model.File;
 import org.nextbox.service.FilesystemAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +25,7 @@ public class UserActionsController {
     private HttpSession session;
 
     @RequestMapping(value="/upload", method = RequestMethod.POST)
-    public String uploadFile(@RequestParam("uploadedfile")MultipartFile file, @RequestParam("currentDirectory")String currentDirectory) throws FileNotFoundException {
+    public String uploadFile(@RequestParam("uploadedfile")MultipartFile file, @RequestParam("currentDirectory")String currentDirectory, Model model) throws FileNotFoundException {
         // Create a file object
         File fileToUpload = new File(file);
 
@@ -34,9 +35,10 @@ public class UserActionsController {
         boolean uploaded = FilesystemAPI.uploadFile(user, fileToUpload, currentDirectory);
 
         if(uploaded) {
-            return "uploaded";
+            model.addAttribute("message", "File successfully uploaded");
+        } else {
+            model.addAttribute("message", "Failed to upload file");
         }
-
-        return "loginsuccess";
+        return "home";
     }
 }

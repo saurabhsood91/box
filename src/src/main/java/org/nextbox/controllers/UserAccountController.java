@@ -47,10 +47,11 @@ public class UserAccountController {
             model.addAttribute("user", user);
             model.addAttribute("currentDirectory", user.getHomeDirectory());
 
-            return "loginsuccess";
-        } else {
-            return "loginfail";
+            model.addAttribute("message", "Logged in!");
+            return "home";
         }
+        model.addAttribute("message", "Invalid username or password!");
+        return "index";
     }
 
 }

@@ -11,7 +11,7 @@
     <title>Nextbox</title>
 </head>
 <body>
-    <h1>Login Success!</h1>
+    <h1>${message}</h1>
     <h2>${user.userName}</h2>
     <form action="/upload" method="post" enctype="multipart/form-data">
         <p>Select a File:</p>
