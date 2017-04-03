@@ -22,6 +22,7 @@
         <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
         <input type="submit" value="Upload File" />
     </form>
+
     <div>
         <h3>Directory Contents</h3>
         <ul>

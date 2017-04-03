@@ -3,6 +3,7 @@ package org.nextbox.controllers;
 import org.nextbox.model.AbstractUser;
 import org.nextbox.model.File;
 import org.nextbox.service.FilesystemAPI;
+import org.nextbox.service.FilesystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,11 @@ public class UserActionsController {
 
         if(uploaded) {
             model.addAttribute("message", "File successfully uploaded");
+            // Get home directory
+            String homeDirectory = user.getHomeDirectory();
+            java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
+
+            model.addAttribute("files", homeDirectoryContents);
         } else {
             model.addAttribute("message", "Failed to upload file");
         }
