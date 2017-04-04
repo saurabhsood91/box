@@ -15,6 +15,7 @@ import org.springframework.validation.ObjectError;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -45,11 +46,19 @@ public class UserAccountController {
 
             // add user object to model
             model.addAttribute("user", user);
+            model.addAttribute("currentDirectory", user.getHomeDirectory());
 
-            return "loginsuccess";
-        } else {
-            return "loginfail";
+            // Get home directory
+            String homeDirectory = user.getHomeDirectory();
+            File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
+
+            model.addAttribute("files", homeDirectoryContents);
+
+            model.addAttribute("message", "Logged in!");
+            return "home";
         }
+        model.addAttribute("message", "Invalid username or password!");
+        return "index";
     }
 
 }
