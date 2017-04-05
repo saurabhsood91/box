@@ -38,10 +38,18 @@
         <ul>
             <c:forEach var="file" items="${files}">
                 <li>${file}</li>
-                    <input type="hidden" name="fileSelected" value="${file}"></input>
-                    <form action="/View"><input type="submit" value="view"></input></form>
-                    <form action="/Move"><input type="submit" value="move/rename"></input></form>
-                    <form action="/Delete"><input type="submit" value="delete"></input></form>
+                    <form action="/view">
+                        <input type="hidden" name="fileSelected" value="${file}"/>
+                        <input type="submit" value="view"/>
+                    </form>
+                    <form action="/move">
+                        <input type="hidden" name="fileSelected" value="${file}"/>
+                        <input type="submit" value="move/rename"/>
+                    </form>
+                    <form action="/delete">
+                        <input type="hidden" name="fileSelected" value="${file}"/>
+                        <input type="submit" value="delete"/>
+                    </form>
             </c:forEach>
         </ul>
     </div>
