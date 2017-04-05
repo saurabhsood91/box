@@ -24,10 +24,24 @@
     </form>
 
     <div>
-        <h3>Directory Contents</h3>
+        <h3>Create a Directory</h3>
+        <form action="/createDir">
+            <p>Specify name:</p>
+            <input type="text" name="dirName"/>
+            <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
+            <input type="submit" value="Create Dir" />
+        </form>
+    </div>
+
+    <div>
+        <h4>Directory Contents</h4>
         <ul>
             <c:forEach var="file" items="${files}">
                 <li>${file}</li>
+                    <input type="hidden" name="fileSelected" value="${file}"></input>
+                    <form action="/View"><input type="submit" value="view"></input></form>
+                    <form action="/Move"><input type="submit" value="move/rename"></input></form>
+                    <form action="/Delete"><input type="submit" value="delete"></input></form>
             </c:forEach>
         </ul>
     </div>
