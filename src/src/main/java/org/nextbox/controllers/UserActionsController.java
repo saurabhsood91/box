@@ -1,6 +1,6 @@
 package org.nextbox.controllers;
 
-import org.nextbox.model.AbstractUser;
+import org.nextbox.model.User;
 import org.nextbox.model.File;
 import org.nextbox.service.FilesystemAPI;
 import org.nextbox.service.FilesystemService;
@@ -31,7 +31,7 @@ public class UserActionsController {
         File fileToUpload = new File(file);
 
         // Get session object
-        AbstractUser user = (AbstractUser)session.getAttribute("user");
+        User user = (User)session.getAttribute("user");
 
         boolean uploaded = FilesystemAPI.uploadFile(user, fileToUpload, currentDirectory);
 
@@ -45,6 +45,7 @@ public class UserActionsController {
         } else {
             model.addAttribute("message", "Failed to upload file");
         }
+        model.addAttribute("currentDirectory", currentDirectory);
         return "home";
     }
 }

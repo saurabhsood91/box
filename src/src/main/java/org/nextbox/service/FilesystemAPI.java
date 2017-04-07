@@ -1,8 +1,7 @@
 package org.nextbox.service;
 
-import org.nextbox.model.AbstractUser;
+import org.nextbox.model.User;
 import org.nextbox.model.File;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,11 +11,11 @@ import java.io.IOException;
  * Created by saurabh on 3/27/17.
  */
 public class FilesystemAPI {
-    private static boolean hasSufficientSpace(AbstractUser user, File file) {
+    private static boolean hasSufficientSpace(User user, File file) {
         return true;
     }
 
-    public static boolean uploadFile(AbstractUser user, File file, String path) throws FileNotFoundException {
+    public static boolean uploadFile(User user, File file, String path) throws FileNotFoundException {
         if(!hasSufficientSpace(user, file)) {
             return false;
         }
@@ -25,10 +24,10 @@ public class FilesystemAPI {
             return false;
         }
 
-        return upload(user, file, path);
+        return upload(file, path);
     }
 
-    private static boolean upload(AbstractUser user, File file, String path) throws FileNotFoundException {
+    private static boolean upload(File file, String path) throws FileNotFoundException {
         byte b[] = file.getBytes();
 
         FileOutputStream fos = new FileOutputStream(path + file.getOriginalFilename());

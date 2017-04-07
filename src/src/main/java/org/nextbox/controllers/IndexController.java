@@ -1,7 +1,6 @@
 package org.nextbox.controllers;
-import org.nextbox.model.AbstractUser;
+import org.nextbox.model.User;
 import org.nextbox.service.FilesystemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
@@ -19,7 +18,7 @@ public class IndexController {
     public String index(Model model, HttpSession session) {
         model.addAttribute("org", "NextBox");
 
-        AbstractUser user = (AbstractUser)session.getAttribute("user");
+        User user = (User)session.getAttribute("user");
         if(user != null) {
             model.addAttribute("user", user);
 

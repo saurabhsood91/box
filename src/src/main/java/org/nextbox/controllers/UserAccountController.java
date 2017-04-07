@@ -5,20 +5,16 @@ package org.nextbox.controllers;
  */
 
 import org.nextbox.managers.UserManager;
-import org.nextbox.model.AbstractUser;
+import org.nextbox.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
-import java.util.Map;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.nextbox.service.*;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,21 +37,26 @@ public class UserAccountController {
         if(isLogin) {
 
             // Get username
-            AbstractUser user = userManager.getUserByUsername(username);
-            httpSession.setAttribute("user", user);
+            User user = userManager.getUserByUsername(username);
+            if(!user.isAdmin()) {
+                httpSession.setAttribute("user", user);
 
-            // add user object to model
-            model.addAttribute("user", user);
-            model.addAttribute("currentDirectory", user.getHomeDirectory());
+                // add user object to model
+                model.addAttribute("user", user);
+                model.addAttribute("currentDirectory", user.getHomeDirectory());
 
-            // Get home directory
-            String homeDirectory = user.getHomeDirectory();
-            File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
+                // Get home directory
+                String homeDirectory = user.getHomeDirectory();
+                File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
 
-            model.addAttribute("files", homeDirectoryContents);
+                model.addAttribute("files", homeDirectoryContents);
 
-            model.addAttribute("message", "Logged in!");
-            return "home";
+                model.addAttribute("message", "Logged in!");
+                return "home";
+            } else {
+                // TODO return some other page
+            }
+
         }
         model.addAttribute("message", "Invalid username or password!");
         return "index";
