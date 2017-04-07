@@ -51,8 +51,8 @@ public class UserActionsController {
         } else {
             model.addAttribute("message", "Failed to upload file");
         }
+
         model.addAttribute("currentDirectory", currentDirectory);
-        model.addAttribute("currentDirectory",currentDirectory);
         return "home";
     }
 
@@ -96,14 +96,16 @@ public class UserActionsController {
 
         if(created) {
             model.addAttribute("message", "Directory successfully created");
-            // Get home directory
-            Path homeDirectory = user.getHomeDirectory();
-            java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
-
-            model.addAttribute("files", homeDirectoryContents);
-        } else {
+        }
+        else {
             model.addAttribute("message", "Failed to create directory");
         }
+        // Get home directory
+        Path homeDirectory = user.getHomeDirectory();
+        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
+
+        model.addAttribute("files", homeDirectoryContents);
+        model.addAttribute("currentDirectory", currentDirectory);
         return "home";
     }
 }
