@@ -5,11 +5,8 @@ package org.nextbox.dao;
  */
 
 import org.hibernate.SessionFactory;
-import org.nextbox.model.AbstractUser;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Query;
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class LoginDAOImpl implements LoginDAO {
         Session session = sessionFactory.openSession();
         boolean userFound = false;
 
-        String SQL_QUERY = "from AbstractUser as o where o.userName=? and o.password=?";
+        String SQL_QUERY = "from User as o where o.userName=? and o.password=?";
         Query query = session.createQuery(SQL_QUERY);
 
         query.setParameter(0, userName);

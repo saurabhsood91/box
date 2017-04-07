@@ -25,7 +25,7 @@ import javax.persistence.Embeddable;
 
 @Entity
 @Table(name = "account")
-public class AbstractUser implements Serializable {
+public class User implements Serializable {
 
     public String getUserName() {
         return userName;
@@ -72,4 +72,20 @@ public class AbstractUser implements Serializable {
 
     @Column(name="home_dir")
     String homeDirectory;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Column(name="role")
+    String role;
+
+    public boolean isAdmin() {
+        return this.getRole().compareTo("admin") == 0;
+    }
+
 }
