@@ -13,7 +13,6 @@
 <head>
     <title>Nextbox</title>
 </head>
-<body>
     <h1>${message}</h1>
     <h2>${user.userName}</h2>
     <form action="/upload" method="post" enctype="multipart/form-data">
@@ -22,7 +21,27 @@
         <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
         <input type="submit" value="Upload File" />
     </form>
-
+    <form action="/search" method="post">
+        <p>Search : </p>
+        <input type="text" name="searchTerm" value="${searchTerm}"></input>
+        <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
+        <input type="submit" value="Search"></input>
+        <p>${term}</p>
+    </form>
+    <div>
+        <c:if test="${searchResults != null}">
+            <h3>Search Results</h3>
+            <ul>
+                <c:forEach var="searchResult" items="${searchResults}">
+                    <li>${searchResult}</li>
+                </c:forEach>
+            </ul>
+            <form action="/returnToHome" method="post">
+                <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
+                <input type="submit" value="Return to home"/>
+            </form>
+        </c:if>
+    </div>
     <div>
         <h3>Directory Contents</h3>
         <ul>
