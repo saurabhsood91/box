@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import java.io.File;
+import java.nio.file.Path;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,7 +24,7 @@ public class IndexController {
             model.addAttribute("user", user);
 
             // Get home directory
-            String homeDirectory = user.getHomeDirectory();
+            Path homeDirectory = user.getHomeDirectory();
             File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
 
             model.addAttribute("files", homeDirectoryContents);

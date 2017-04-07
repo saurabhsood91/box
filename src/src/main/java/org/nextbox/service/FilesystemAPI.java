@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by saurabh on 3/27/17.
@@ -20,7 +21,7 @@ public class FilesystemAPI {
         return true;
     }
 
-    public static boolean uploadFile(User user, File file, String path) throws FileNotFoundException {
+    public static boolean uploadFile(User user, File file, Path path) throws FileNotFoundException {
         if(!hasSufficientSpace(user, file)) {
             return false;
         }
@@ -32,14 +33,14 @@ public class FilesystemAPI {
         return upload(file, path);
     }
 
-    public static boolean createDir(User user, String currentDir, String newDir) throws FileNotFoundException {
+    public static boolean createDir(User user, Path currentDir, String newDir) throws FileNotFoundException {
         return createdir(user, currentDir, newDir);
     }
 
-    private static boolean upload(File file, String path) throws FileNotFoundException {
+    private static boolean upload(File file, Path path) throws FileNotFoundException {
         byte b[] = file.getBytes();
 
-        FileOutputStream fos = new FileOutputStream(path + file.getOriginalFilename());
+        FileOutputStream fos = new FileOutputStream(path.toString() + file.getOriginalFilename());
         try {
             fos.write(b);
             fos.close();
@@ -50,10 +51,10 @@ public class FilesystemAPI {
         return true;
     }
 
-    private static boolean createdir(User user, String currentPath, String newDir) throws FileNotFoundException {
-        Path path = FileSystems.getDefault().getPath(currentPath, newDir);
+    private static boolean createdir(User user, Path currentPath, String newDir) throws FileNotFoundException {
+        Path newpath = Paths.get(currentPath.toString(), newDir);
         try {
-            Files.createDirectory(path);
+            Files.createDirectory(newpath);
         } catch (IOException e) {
             e.printStackTrace();
             return false;

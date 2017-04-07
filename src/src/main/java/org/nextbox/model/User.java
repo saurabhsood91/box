@@ -7,6 +7,8 @@ package org.nextbox.model;
 import java.util.List;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -62,8 +64,8 @@ public class User implements Serializable {
     @Column(name="password")
     String password;
 
-    public String getHomeDirectory() {
-        return homeDirectory;
+    public Path getHomeDirectory() {
+        return Paths.get(homeDirectory);
     }
 
     public void setHomeDirectory(String homeDirectory) {

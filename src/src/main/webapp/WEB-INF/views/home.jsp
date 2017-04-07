@@ -27,7 +27,7 @@
         <h3>Create a Directory</h3>
         <form action="/createDir">
             <p>Specify name:</p>
-            <input type="text" name="dirName"/>
+            <input type="text" name="createDirName"/>
             <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
             <input type="submit" value="Create Dir" />
         </form>
