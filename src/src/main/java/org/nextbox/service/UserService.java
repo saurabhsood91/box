@@ -1,10 +1,10 @@
 package org.nextbox.service;
 
-import org.nextbox.model.AbstractUser;
+import org.nextbox.model.User;
 
 /**
  * Created by saurabh on 3/21/17.
  */
 public interface UserService {
-    public AbstractUser getUserByUsername(String username);
+    public User getUserByUsername(String username);
 }

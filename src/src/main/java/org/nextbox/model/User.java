@@ -7,6 +7,8 @@ package org.nextbox.model;
 import java.util.List;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -25,7 +27,7 @@ import javax.persistence.Embeddable;
 
 @Entity
 @Table(name = "account")
-public class AbstractUser implements Serializable {
+public class User implements Serializable {
 
     public String getUserName() {
         return userName;
@@ -61,4 +63,31 @@ public class AbstractUser implements Serializable {
 
     @Column(name="password")
     String password;
+
+    public Path getHomeDirectory() {
+        return Paths.get(homeDirectory);
+    }
+
+    public void setHomeDirectory(String homeDirectory) {
+        this.homeDirectory = homeDirectory;
+    }
+
+    @Column(name="home_dir")
+    String homeDirectory;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Column(name="role")
+    String role;
+
+    public boolean isAdmin() {
+        return this.getRole().compareTo("admin") == 0;
+    }
+
 }

@@ -3,7 +3,7 @@ package org.nextbox.dao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.nextbox.model.AbstractUser;
+import org.nextbox.model.User;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -26,10 +26,10 @@ public class UserDAOImpl implements UserDAO {
     @Resource(name="sessionFactory")
     protected SessionFactory sessionFactory;
 
-    public AbstractUser getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         Session session = sessionFactory.openSession();
 
-        String HQL_QUERY = "from AbstractUser as o where o.userName=?";
+        String HQL_QUERY = "from User as o where o.userName=?";
         Query query = session.createQuery(HQL_QUERY);
         query.setParameter(0, username);
 
@@ -38,7 +38,7 @@ public class UserDAOImpl implements UserDAO {
         if(list == null) {
             return null;
         }
-        AbstractUser user = (AbstractUser)list.get(0);
+        User user = (User)list.get(0);
         return user;
     }
 }

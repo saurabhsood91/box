@@ -1,6 +1,6 @@
 package org.nextbox.managers;
 
-import org.nextbox.model.AbstractUser;
+import org.nextbox.model.User;
 import org.nextbox.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class UserManager {
     @Autowired
     private UserService userService;
 
-    public AbstractUser getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         return userService.getUserByUsername(username);
     }
 }
