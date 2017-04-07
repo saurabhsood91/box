@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
+import java.nio.file.FileSystems;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 /**
  * Created by saurabh on 3/27/17.
@@ -33,12 +36,14 @@ public class UserActionsController {
         // Get session object
         User user = (User)session.getAttribute("user");
 
-        boolean uploaded = FilesystemAPI.uploadFile(user, fileToUpload, currentDirectory);
+        java.nio.file.Path currentDir = Paths.get(currentDirectory);
+
+        boolean uploaded = FilesystemAPI.uploadFile(user, fileToUpload, currentDir);
 
         if(uploaded) {
             model.addAttribute("message", "File successfully uploaded");
             // Get home directory
-            String homeDirectory = user.getHomeDirectory();
+            java.nio.file.Path homeDirectory = user.getHomeDirectory();
             java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
 
             model.addAttribute("files", homeDirectoryContents);
@@ -63,7 +68,10 @@ public class UserActionsController {
 
     @RequestMapping(value="/returnToHome", method = RequestMethod.POST)
     public String returnToHome(@RequestParam("currentDirectory")String currentDirectory, Model model){
-        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(currentDirectory);
+        Path currentDir = Paths.get(currentDirectory);
+        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(currentDir);
+
+        User user = (User)session.getAttribute("user");
 
         model.addAttribute("currentDirectory",currentDirectory);
         model.addAttribute("files", homeDirectoryContents);
@@ -71,4 +79,26 @@ public class UserActionsController {
         return "home";
     }
 
+    @RequestMapping(value="/createDir")
+    public String createDir(@RequestParam("createDirName")String dirName, @RequestParam("currentDirectory")String currentDirectory, Model model) throws FileNotFoundException {
+
+        // Get session object
+        User user = (User)session.getAttribute("user");
+
+        java.nio.file.Path currentDir = Paths.get(currentDirectory);
+
+        boolean created = FilesystemAPI.createDir(user, currentDir, dirName);
+
+        if(created) {
+            model.addAttribute("message", "Directory successfully created");
+            // Get home directory
+            java.nio.file.Path homeDirectory = user.getHomeDirectory();
+            java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
+
+            model.addAttribute("files", homeDirectoryContents);
+        } else {
+            model.addAttribute("message", "Failed to create directory");
+        }
+        return "home";
+    }
 }

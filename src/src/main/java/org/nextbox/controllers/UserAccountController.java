@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.nio.file.Path;
 import javax.servlet.http.HttpSession;
 
 import org.nextbox.service.*;
@@ -46,7 +47,7 @@ public class UserAccountController {
                 model.addAttribute("currentDirectory", user.getHomeDirectory());
 
                 // Get home directory
-                String homeDirectory = user.getHomeDirectory();
+                Path homeDirectory = user.getHomeDirectory();
                 File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
 
                 model.addAttribute("files", homeDirectoryContents);
