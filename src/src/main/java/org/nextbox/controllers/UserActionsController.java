@@ -46,6 +46,29 @@ public class UserActionsController {
             model.addAttribute("message", "Failed to upload file");
         }
         model.addAttribute("currentDirectory", currentDirectory);
+        model.addAttribute("currentDirectory",currentDirectory);
         return "home";
     }
+
+    @RequestMapping(value="/search", method = RequestMethod.POST)
+    public String searchFile(@RequestParam("searchTerm")String searchTerm, @RequestParam("currentDirectory")String currentDirectory, Model model){
+
+        java.io.File[] results = FilesystemAPI.searchFile(searchTerm, currentDirectory);
+        model.addAttribute("searchResults",results);
+        model.addAttribute("currentDirectory",currentDirectory);
+        model.addAttribute("searchTerm", searchTerm);
+
+        return "home";
+    }
+
+    @RequestMapping(value="/returnToHome", method = RequestMethod.POST)
+    public String returnToHome(@RequestParam("currentDirectory")String currentDirectory, Model model){
+        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(currentDirectory);
+
+        model.addAttribute("currentDirectory",currentDirectory);
+        model.addAttribute("files", homeDirectoryContents);
+
+        return "home";
+    }
+
 }

@@ -22,7 +22,27 @@
         <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
         <input type="submit" value="Upload File" />
     </form>
-
+    <form action="/search" method="post">
+        <p>Search : </p>
+        <input type="text" name="searchTerm" value="${searchTerm}"></input>
+        <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
+        <input type="submit" value="Search"></input>
+        <p>${term}</p>
+    </form>
+    <div>
+        <c:if test="${searchResults != null}">
+            <h3>Search Results</h3>
+            <ul>
+                <c:forEach var="searchResult" items="${searchResults}">
+                    <li>${searchResult}</li>
+                </c:forEach>
+            </ul>
+            <form action="/returnToHome" method="post">
+                <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
+                <input type="submit" value="Return to home"/>
+            </form>
+        </c:if>
+    </div>
     <div>
         <h3>Directory Contents</h3>
         <ul>

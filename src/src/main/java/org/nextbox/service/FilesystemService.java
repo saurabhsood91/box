@@ -12,4 +12,26 @@ public class FilesystemService {
         File currentFile = new File(path);
         return currentFile.listFiles();
     }
+    public static void findFile(String name,File file, ArrayList<File> result)
+    {
+        if(name == null || name.length() == 0)
+            return;
+        File[] list = file.listFiles();
+        if(list!=null)
+            for (java.io.File fil : list)
+            {
+                if (fil.isDirectory())
+                {
+                   // result.addAll(findFile(name,fil,result));
+                            //+= findFile(name,fil,result);
+                    findFile(name,fil,result);
+                }
+                else if (fil.getName().toLowerCase().contains(name.toLowerCase()))
+                {
+                    result.add(fil);
+                            //fil.getParentFile() + "\\" + fil.getName() + "<br/>" + result  ;
+                }
+            }
+        //return result;
+    }
 }

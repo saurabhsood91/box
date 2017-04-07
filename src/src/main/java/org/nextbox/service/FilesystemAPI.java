@@ -6,6 +6,7 @@ import org.nextbox.model.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by saurabh on 3/27/17.
@@ -39,6 +40,17 @@ public class FilesystemAPI {
             return false;
         }
         return true;
+    }
+
+    public static java.io.File[] searchFile(String searchTerm, String path)
+    {
+        ArrayList<java.io.File> searchResults = new ArrayList<java.io.File>();
+        //searchResults =
+                FilesystemService.findFile(searchTerm, new java.io.File(path),searchResults);
+        java.io.File[] files = new java.io.File[searchResults.size()];
+        for(int i = 0 ; i < searchResults.size(); i++ )// java.io.File file: searchResults)
+            files[i] = searchResults.get(i);
+        return files;
     }
 
 }
