@@ -13,6 +13,7 @@
 <head>
     <title>Nextbox</title>
 </head>
+<body>
     <h1>${message}</h1>
     <h2>${user.userName}</h2>
     <form action="/upload" method="post" enctype="multipart/form-data">
