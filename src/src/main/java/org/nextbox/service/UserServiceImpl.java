@@ -17,4 +17,8 @@ public class UserServiceImpl implements UserService {
     public User getUserByUsername(String username) {
         return userDAO.getUserByUsername(username);
     }
+
+    public boolean createAccount(User user) {
+        return userDAO.createAccount(user);
+    }
 }

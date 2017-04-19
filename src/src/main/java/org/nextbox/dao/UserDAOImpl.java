@@ -41,4 +41,21 @@ public class UserDAOImpl implements UserDAO {
         User user = (User)list.get(0);
         return user;
     }
+
+    public boolean createAccount(User user) {
+        boolean success = false;
+        Session session = sessionFactory.openSession();
+        try{
+            session.save(user);
+            success = true;
+//            String HQL_QUERY = "from User as o where o.userName=?,?,?";
+//            Query query = session.createQuery(HQL_QUERY);
+//            query.executeUpdate();
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            session.close();
+        }
+        return success;
+    }
 }

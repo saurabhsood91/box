@@ -63,4 +63,24 @@ public class UserAccountController {
         return "index";
     }
 
+    @RequestMapping(value = "/createAccount", method = RequestMethod.POST, params = {"firstname","lastname","email",
+                "username", "password"})
+    public String createAccount(@RequestParam(value="firstname") String firstName,@RequestParam(value="lastname")String lastName,
+                                 @RequestParam(value="email") String email,@RequestParam(value="username") String userName,
+                                 @RequestParam(value="password")String password){
+        boolean success = false;
+        try{
+            User user = new User();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setUserName(userName);
+            user.setPassword(password);
+            success = userManager.createAccount(user);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success ? "home" : "index";
+    }
+
 }

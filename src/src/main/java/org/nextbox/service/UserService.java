@@ -7,4 +7,6 @@ import org.nextbox.model.User;
  */
 public interface UserService {
     public User getUserByUsername(String username);
+
+    public boolean createAccount(User user);
 }

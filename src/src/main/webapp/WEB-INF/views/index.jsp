@@ -6,11 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<input>
 <head>
     <title>NextBox</title>
 </head>
-<>
     <h1>${org}</h1>
 
     <h2>${message}</h2>
@@ -24,7 +22,7 @@
         <input type="reset" value="Clear">
     </form>
 
-    <form action="/signup" method="post">
+    <form action="/createAccount" method="post">
         <label for="firstname">First Name</label>
         <input type="text" name="firstname"></input><br>
         <label for="lastname">Last Name</label>

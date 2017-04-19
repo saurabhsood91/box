@@ -17,4 +17,10 @@ public class UserManager {
     public User getUserByUsername(String username) {
         return userService.getUserByUsername(username);
     }
+
+    public boolean createAccount(User user) {
+        user.setHomeDirectory("home");
+//        user.setRole("user");
+        return userService.createAccount(user);
+    }
 }
