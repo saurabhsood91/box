@@ -4,6 +4,8 @@ package org.nextbox.model;
  * Created by saurabh on 3/19/17.
  */
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.util.List;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -29,12 +31,35 @@ import javax.persistence.Embeddable;
 @Table(name = "account")
 public class User implements Serializable {
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getUserName() {
         return userName;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+    public String getLastname() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
@@ -64,6 +89,21 @@ public class User implements Serializable {
     @Column(name="password")
     String password;
 
+    @Column(name="lastname")
+    String lastName;
+
+    @Column(name="firstname")
+    String firstName;
+
+    @Column(name="email")
+    String email;
+
+    @Column(name="role")
+    String role;
+
+    @Column(name="home_dir")
+    String homeDirectory;
+
     public Path getHomeDirectory() {
         return Paths.get(homeDirectory);
     }
@@ -72,8 +112,7 @@ public class User implements Serializable {
         this.homeDirectory = homeDirectory;
     }
 
-    @Column(name="home_dir")
-    String homeDirectory;
+
 
     public String getRole() {
         return role;
@@ -82,9 +121,6 @@ public class User implements Serializable {
     public void setRole(String role) {
         this.role = role;
     }
-
-    @Column(name="role")
-    String role;
 
     public boolean isAdmin() {
         return this.getRole().compareTo("admin") == 0;
