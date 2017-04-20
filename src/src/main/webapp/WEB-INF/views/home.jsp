@@ -22,6 +22,13 @@
         <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
         <input type="submit" value="Upload File" />
     </form>
+
+    <form action="/deleteFile" method="post" enctype="multipart/form-data">
+        <p>Select File to Delete</p>
+        <input type="file" name="deletedfile"></input>
+        <input type="hidden" value="${currentDirectory}" name="currentDirectory"> </input>
+        <input type="submit" value="Delete File"> </input>
+    </form>
     <form action="/search" method="post">
         <p>Search : </p>
         <input type="text" name="searchTerm" value="${searchTerm}"></input>
