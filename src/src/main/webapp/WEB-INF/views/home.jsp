@@ -51,7 +51,7 @@
         </c:if>
     </div>
     <div>
-        <h3>Create a Directory</h3>
+        <h4>Create a Directory</h4>
         <form action="/createDir">
             <p>Specify name:</p>
             <input type="text" name="createDirName"/>
@@ -61,7 +61,7 @@
     </div>
 
     <div>
-        <h4>Directory Contents</h4>
+        <h5>Directory Contents</h5>
         <ul>
             <c:forEach var="file" items="${files}">
                 <li>${file}</li>

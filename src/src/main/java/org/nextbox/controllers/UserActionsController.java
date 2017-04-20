@@ -1,5 +1,6 @@
 package org.nextbox.controllers;
 
+import org.nextbox.model.Filepath;
 import org.nextbox.model.User;
 import org.nextbox.model.File;
 import org.nextbox.service.FilesystemAPI;
@@ -14,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
-import java.nio.file.FileSystems;
-import java.nio.file.Paths;
 import java.nio.file.Path;
 
 /**
@@ -36,22 +35,24 @@ public class UserActionsController {
         // Get session object
         User user = (User)session.getAttribute("user");
 
-        java.nio.file.Path currentDir = Paths.get(currentDirectory);
+        Filepath nPath = new Filepath();
+        nPath.setPath(currentDirectory);
+        Path currentDir = nPath.getPath();
 
         boolean uploaded = FilesystemAPI.uploadFile(user, fileToUpload, currentDir);
 
         if(uploaded) {
             model.addAttribute("message", "File successfully uploaded");
             // Get home directory
-            java.nio.file.Path homeDirectory = user.getHomeDirectory();
+            Path homeDirectory = user.getHomeDirectory();
             java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
 
             model.addAttribute("files", homeDirectoryContents);
         } else {
             model.addAttribute("message", "Failed to upload file");
         }
+
         model.addAttribute("currentDirectory", currentDirectory);
-        model.addAttribute("currentDirectory",currentDirectory);
         return "home";
     }
 
@@ -68,7 +69,9 @@ public class UserActionsController {
 
     @RequestMapping(value="/returnToHome", method = RequestMethod.POST)
     public String returnToHome(@RequestParam("currentDirectory")String currentDirectory, Model model){
-        Path currentDir = Paths.get(currentDirectory);
+        Filepath nPath = new Filepath();
+        nPath.setPath(currentDirectory);
+        Path currentDir = nPath.getPath();
         java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(currentDir);
 
         User user = (User)session.getAttribute("user");
@@ -85,20 +88,24 @@ public class UserActionsController {
         // Get session object
         User user = (User)session.getAttribute("user");
 
-        java.nio.file.Path currentDir = Paths.get(currentDirectory);
+        Filepath nPath = new Filepath();
+        nPath.setPath(currentDirectory);
+        Path currentDir = nPath.getPath();
 
         boolean created = FilesystemAPI.createDir(user, currentDir, dirName);
 
         if(created) {
             model.addAttribute("message", "Directory successfully created");
-            // Get home directory
-            java.nio.file.Path homeDirectory = user.getHomeDirectory();
-            java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
-
-            model.addAttribute("files", homeDirectoryContents);
-        } else {
+        }
+        else {
             model.addAttribute("message", "Failed to create directory");
         }
+        // Get home directory
+        Path homeDirectory = user.getHomeDirectory();
+        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
+
+        model.addAttribute("files", homeDirectoryContents);
+        model.addAttribute("currentDirectory", currentDirectory);
         return "home";
     }
 }
