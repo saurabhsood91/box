@@ -70,6 +70,10 @@
                         <input type="hidden" name="fileSelected" value="${file}"/>
                         <input type="submit" value="delete"/>
                     </form>
+                    <form action="/sharefile" method="get">
+                        <input type="hidden" value="${file}" name="fileToShare" />
+                    <input type="submit" value="Share File" />
+                </form>
             </c:forEach>
         </ul>
     </div>

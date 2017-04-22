@@ -4,6 +4,8 @@ package org.nextbox.model;
  * Created by saurabh on 3/19/17.
  */
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -88,6 +90,20 @@ public class User implements Serializable {
 
     public boolean isAdmin() {
         return this.getRole().compareTo("admin") == 0;
+    }
+
+    public boolean shareFile(String fileToShare, User userToShare) throws IOException {
+        // get the user's home directory
+        Path homeDirectory = userToShare.getHomeDirectory();
+
+        // Convert the file to a Path object
+        Path filePath = Paths.get(fileToShare);
+
+        // New Path
+        Path outputPath = Paths.get(homeDirectory.toString(), filePath.getFileName().toString());
+
+        Files.copy(filePath, outputPath);
+        return true;
     }
 
 }
