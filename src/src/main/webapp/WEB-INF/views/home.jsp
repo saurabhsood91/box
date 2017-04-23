@@ -24,9 +24,9 @@
     </form>
     <form action="/search" method="post">
         <p>Search : </p>
-        <input type="text" name="searchTerm" value="${searchTerm}"></input>
+        <input type="text" name="searchTerm" value="${searchTerm}"/>
         <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
-        <input type="submit" value="Search"></input>
+        <input type="submit" value="Search"/>
         <p>${term}</p>
     </form>
     <div>
@@ -59,6 +59,7 @@
             <c:forEach var="file" items="${files}">
                 <li>${file}</li>
                     <form action="/view">
+                        <input type="hidden" name="currentDirectory" value="${currentDirectory}"/>
                         <input type="hidden" name="fileSelected" value="${file}"/>
                         <input type="submit" value="view"/>
                     </form>
