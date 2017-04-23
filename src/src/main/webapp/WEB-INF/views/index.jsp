@@ -22,18 +22,9 @@
         <input type="reset" value="Clear">
     </form>
 
-    <form action="/createAccount" method="post">
-        <label for="firstname">First Name</label>
-        <input type="text" name="firstname"></input><br>
-        <label for="lastname">Last Name</label>
-        <input type="text" name="lastname"></input><br>
-        <label for="email">Email</label>
-        <input type="text" name="email"></input><br>
-        <label for="username">Username</label>
-        <input type="text" name="username"></input><br>
-        <label for="password">Password</label>
-        <input type="password" name="password" /><br>
-        <input type="submit" value="submit"></input>
+    <form action="/signup" method="post">
+        <label>New User</label>
+        <input type="submit" value="Create an Account"></input>
     </form>
 
 

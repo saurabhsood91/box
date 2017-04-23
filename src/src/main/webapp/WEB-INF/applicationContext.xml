@@ -14,7 +14,7 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/nextbox" />
         <property name="username" value="root" />
-        <property name="password" value="" />
+        <property name="password" value="46brijamrai" />
     </bean>
 
     <context:property-placeholder location="/WEB-INF/app.properties" />
@@ -36,7 +36,7 @@
                 class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 
         <!-- setting maximum upload size -->
-        <property name="maxUploadSize" value="1000000" />
+        <property name="maxUploadSize" value="10000000" />
 
     </bean>
 
