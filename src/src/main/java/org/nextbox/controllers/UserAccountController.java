@@ -76,11 +76,16 @@ public class UserAccountController {
             user.setEmail(email);
             user.setUserName(userName);
             user.setPassword(password);
+            user.setRole("user");
             success = userManager.createAccount(user);
         }catch (Exception e){
             e.printStackTrace();
         }
         return success ? "home" : "index";
+    }
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public String  signup(){
+        return "signup";
     }
 
 }
