@@ -44,7 +44,7 @@
         </c:if>
     </div>
     <div>
-        <h4>Create a Directory</h4>
+        <h5>Create a Directory</h5>
         <form action="/createDir">
             <p>Specify name:</p>
             <input type="text" name="createDirName"/>
@@ -52,7 +52,14 @@
             <input type="submit" value="Create Dir" />
         </form>
     </div>
-
+    <div>
+        <ul>
+            <form action="/returnToHome" method="post">
+                <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
+                <input type="submit" value="Return to home"/>
+            </form>
+        </ul>
+    </div>
     <div>
         <h5>Directory Contents</h5>
         <ul>
