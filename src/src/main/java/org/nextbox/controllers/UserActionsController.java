@@ -6,6 +6,7 @@ import org.nextbox.model.User;
 import org.nextbox.service.FilesystemAPI;
 import org.nextbox.service.FilesystemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.support.NullValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -117,15 +118,20 @@ public class UserActionsController {
     public String View(@RequestParam("currentDirectory")String currentDirectory, @RequestParam("fileSelected")String fileSelected, Model model){
         Filepath nPath = new Filepath();
         nPath.setPath(fileSelected);
-        Path newDir = nPath.toAbs();
-        java.io.File[] directoryContents = FilesystemService.getDirContents(newDir);
 
-        User user = (User)session.getAttribute("user");
+        if (nPath.pathIsDir()) {
+            Path newDir = nPath.toAbs();
+            java.io.File[] directoryContents = FilesystemService.getDirContents(newDir);
 
-        model.addAttribute("fileSelected", newDir);
-        model.addAttribute("files", directoryContents);
+            User user = (User) session.getAttribute("user");
+            model.addAttribute("searchResults",null);
+            model.addAttribute("files", directoryContents);
 
-        return "home";
+            return "home";
+        }
+        else {
+            return "home";
+        }
     }
 
     @RequestMapping(value="/delete")
