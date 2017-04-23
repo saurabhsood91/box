@@ -84,7 +84,7 @@ public class FilesystemAPI {
         int choice = JOptionPane.showConfirmDialog(null, "Should i delete this?", "Warning", JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.YES_OPTION)
         {
-            // Try block taken from Oracle File class documentation.
+            // Try block taken from Oracle File class documentation: https://docs.oracle.com/javase/tutorial/essential/io/delete.html
             try {
                 Files.delete(toDelete.getPath().toAbsolutePath());
             } catch (NoSuchFileException x) {
@@ -110,7 +110,7 @@ public class FilesystemAPI {
         String dest = JOptionPane.showInputDialog("Type new name or destination, relative to ~/");
         Path relDest = Paths.get(homeDir.toAbsolutePath().toString(), dest);
 
-        // Try block taken from Oracle File class documentation.
+        // Try block taken from Oracle File class documentation: https://docs.oracle.com/javase/tutorial/essential/io/delete.html
         try {
             Files.move(source.getPath(), relDest);
         } catch (NoSuchFileException x) {
