@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by saurabh on 3/27/17.
@@ -88,8 +89,9 @@ public class UserActionsController {
         // Get current directory
         Path homeDirectory = user.getHomeDirectory();
 
-        Filepath currentDir = new Filepath();
-        currentDir.setPath(currentDirectory);
+        //Filepath currentDir = new Filepath();
+        //currentDir.setPath(currentDirectory);
+        //System.out.println(homeDirectory.toAbsolutePath().relativize(Paths.get(dirName).toAbsolutePath()).toString());
         Filepath newDir = new Filepath();
         newDir.setPath(dirName);
         boolean created = FilesystemAPI.createDir(user, newDir);
@@ -101,8 +103,7 @@ public class UserActionsController {
             model.addAttribute("message", "Failed to create directory");
         }
 
-        java.io.File[] directoryContents = FilesystemService.getDirContents(currentDir.getPath());
-        System.out.println(newDir.toAbs().toString());
+        java.io.File[] directoryContents = FilesystemService.getDirContents(homeDirectory);
         model.addAttribute("files", directoryContents);
         model.addAttribute("currentDirectory", currentDirectory);
         return "home";
@@ -120,6 +121,30 @@ public class UserActionsController {
         model.addAttribute("fileSelected", newDir);
         model.addAttribute("files", directoryContents);
 
+        return "home";
+    }
+
+    @RequestMapping(value="/delete")
+    public String Delete(@RequestParam("fileSelected")String fileSelected, Model model) throws FileNotFoundException {
+        // Get session object
+        User user = (User)session.getAttribute("user");
+        // Get current directory
+        Path homeDirectory = user.getHomeDirectory();
+        Filepath delPath = new Filepath();
+        delPath.setPath(fileSelected);
+
+        boolean deleted = FilesystemAPI.deleteFP(user, delPath);
+
+        if(deleted) {
+            model.addAttribute("message", "Object successfully deleted");
+        }
+        else {
+            model.addAttribute("message", "Failed to delete object");
+        }
+
+        java.io.File[] directoryContents = FilesystemService.getDirContents(homeDirectory);
+        model.addAttribute("files", directoryContents);
+        //model.addAttribute("currentDirectory", currentDirectory);
         return "home";
     }
 }
