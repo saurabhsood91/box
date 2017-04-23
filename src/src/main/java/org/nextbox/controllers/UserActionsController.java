@@ -69,12 +69,10 @@ public class UserActionsController {
 
     @RequestMapping(value="/returnToHome", method = RequestMethod.POST)
     public String returnToHome(@RequestParam("currentDirectory")String currentDirectory, Model model){
-        Filepath nPath = new Filepath();
-        nPath.setPath(currentDirectory);
-        Path currentDir = nPath.getPath();
-        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(currentDir);
-
+        // Get session object
         User user = (User)session.getAttribute("user");
+        Path homeDirectory = user.getHomeDirectory();
+        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
 
         model.addAttribute("currentDirectory",currentDirectory);
         model.addAttribute("files", homeDirectoryContents);
@@ -87,12 +85,14 @@ public class UserActionsController {
 
         // Get session object
         User user = (User)session.getAttribute("user");
+        // Get current directory
+        Path homeDirectory = user.getHomeDirectory();
 
-        Filepath nPath = new Filepath();
-        nPath.setPath(currentDirectory);
-        Path currentDir = nPath.getPath();
-
-        boolean created = FilesystemAPI.createDir(user, currentDir, dirName);
+        Filepath currentDir = new Filepath();
+        currentDir.setPath(currentDirectory);
+        Filepath newDir = new Filepath();
+        newDir.setPath(dirName);
+        boolean created = FilesystemAPI.createDir(user, newDir);
 
         if(created) {
             model.addAttribute("message", "Directory successfully created");
@@ -100,12 +100,26 @@ public class UserActionsController {
         else {
             model.addAttribute("message", "Failed to create directory");
         }
-        // Get home directory
-        Path homeDirectory = user.getHomeDirectory();
-        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
 
-        model.addAttribute("files", homeDirectoryContents);
+        java.io.File[] directoryContents = FilesystemService.getDirContents(currentDir.getPath());
+        System.out.println(newDir.toAbs().toString());
+        model.addAttribute("files", directoryContents);
         model.addAttribute("currentDirectory", currentDirectory);
+        return "home";
+    }
+
+    @RequestMapping(value="/view")
+    public String View(@RequestParam("currentDirectory")String currentDirectory, @RequestParam("fileSelected")String fileSelected, Model model){
+        Filepath nPath = new Filepath();
+        nPath.setPath(fileSelected);
+        Path newDir = nPath.toAbs();
+        java.io.File[] directoryContents = FilesystemService.getDirContents(newDir);
+
+        User user = (User)session.getAttribute("user");
+
+        model.addAttribute("fileSelected", newDir);
+        model.addAttribute("files", directoryContents);
+
         return "home";
     }
 }

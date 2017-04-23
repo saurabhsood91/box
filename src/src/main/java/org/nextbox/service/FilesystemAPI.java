@@ -1,6 +1,7 @@
 package org.nextbox.service;
 
 
+import org.nextbox.model.Filepath;
 import org.nextbox.model.User;
 import org.nextbox.model.Directory;
 import org.nextbox.model.File;
@@ -34,8 +35,8 @@ public class FilesystemAPI {
         return upload(file, path);
     }
 
-    public static boolean createDir(User user, Path currentDir, String newDir) throws FileNotFoundException {
-        return createdir(user, currentDir, newDir);
+    public static boolean createDir(User user, Filepath newDir) throws FileNotFoundException {
+        return createdir(newDir);
     }
 
     private static boolean upload(File file, Path path) throws FileNotFoundException {
@@ -62,10 +63,9 @@ public class FilesystemAPI {
         return files;
     }
 
-    private static boolean createdir(User user, Path currentPath, String newDir) throws FileNotFoundException {
-        Path newpath = Paths.get(currentPath.toString(), newDir);
+    private static boolean createdir(Filepath newDir) throws FileNotFoundException {
         try {
-            Files.createDirectory(newpath);
+            Files.createDirectory(newDir.toAbs());
         } catch (IOException e) {
             e.printStackTrace();
             return false;
