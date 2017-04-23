@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -153,4 +154,34 @@ public class UserActionsController {
         //model.addAttribute("currentDirectory", currentDirectory);
         return "home";
     }
+
+    @RequestMapping(value="/move")
+    public String Move(@RequestParam("fileSelected")String fileSelected, Model model) throws IOException {
+        // Get session object
+        User user = (User) session.getAttribute("user");
+        // Get current directory
+        Path homeDirectory = user.getHomeDirectory();
+        Filepath sourcePath = new Filepath();
+        sourcePath.setPath(fileSelected);
+
+        boolean moved = FilesystemAPI.moveRN(user, sourcePath);
+
+        if (moved) {
+            model.addAttribute("message", "Object successfully moved");
+        } else {
+            model.addAttribute("message", "Failed to move object");
+        }
+
+        java.io.File[] directoryContents = FilesystemService.getDirContents(homeDirectory);
+        model.addAttribute("files", directoryContents);
+
+        return "home";
+    }
+
 }
+
+
+
+
+
+
