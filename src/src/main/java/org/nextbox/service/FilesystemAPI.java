@@ -43,6 +43,10 @@ public class FilesystemAPI {
         return deletefp(delDir);
     }
 
+    public static boolean moveRN(User user, Filepath source) throws IOException {
+        return movern(user.getHomeDirectory(), source);
+    }
+
     private static boolean upload(File file, Path path) throws FileNotFoundException {
         byte b[] = file.getBytes();
 
@@ -101,6 +105,27 @@ public class FilesystemAPI {
         {
             return true;
         }
+    }
+
+    private static boolean movern(Path homeDir, Filepath source) throws IOException {
+        String dest = JOptionPane.showInputDialog("Type new name or destination, relative to ~/");
+        Path relDest = Paths.get(homeDir.toAbsolutePath().toString(), dest);
+
+        // Try block taken from Oracle File class documentation.
+        try {
+            Files.move(source.getPath(), relDest);
+        } catch (NoSuchFileException x) {
+            System.err.format("%s: no such" + " file or directory%n", source.getPath().toAbsolutePath());
+            return false;
+        } catch (DirectoryNotEmptyException x) {
+            System.err.format("%s not empty%n", source.getPath().toAbsolutePath());
+            return false;
+        } catch (IOException x) {
+            // File permission problems are caught here.
+            System.err.println(x);
+            return false;
+        }
+        return true;
     }
 
     public static boolean download(User user, String path, HttpServletResponse response)

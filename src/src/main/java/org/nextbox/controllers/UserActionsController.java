@@ -19,7 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+<<<<<<< debd833953bede3bb55b7c264cbaed193b399ddb
 import java.nio.file.Files;
+=======
+>>>>>>> Working directory/file move
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -158,6 +161,29 @@ public class UserActionsController {
         return "home";
     }
 
+    @RequestMapping(value="/move")
+    public String Move(@RequestParam("fileSelected")String fileSelected, Model model) throws IOException {
+        // Get session object
+        User user = (User) session.getAttribute("user");
+        // Get current directory
+        Path homeDirectory = user.getHomeDirectory();
+        Filepath sourcePath = new Filepath();
+        sourcePath.setPath(fileSelected);
+
+        boolean moved = FilesystemAPI.moveRN(user, sourcePath);
+
+        if (moved) {
+            model.addAttribute("message", "Object successfully moved");
+        } else {
+            model.addAttribute("message", "Failed to move object");
+        }
+
+        java.io.File[] directoryContents = FilesystemService.getDirContents(homeDirectory);
+        model.addAttribute("files", directoryContents);
+
+        return "home";
+    }
+
     @RequestMapping(value="/download")
     public void download(HttpServletRequest request,
                          HttpServletResponse response,
@@ -168,3 +194,9 @@ public class UserActionsController {
         boolean downloaded =  FilesystemAPI.download(user,fileSelected,response);
     }
 }
+
+
+
+
+
+
