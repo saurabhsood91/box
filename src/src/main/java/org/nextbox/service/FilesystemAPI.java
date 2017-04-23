@@ -9,11 +9,9 @@ import org.nextbox.model.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.*;
 import java.util.ArrayList;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import javax.swing.JOptionPane;
 
 /**
  * Created by saurabh on 3/27/17.
@@ -36,7 +34,12 @@ public class FilesystemAPI {
     }
 
     public static boolean createDir(User user, Filepath newDir) throws FileNotFoundException {
-        return createdir(newDir);
+        return createdir(Paths.get(user.getHomeDirectory().toAbsolutePath().toString(),
+                newDir.getPath().toString()));
+    }
+
+    public static boolean deleteFP(User user, Filepath delDir) throws FileNotFoundException {
+        return deletefp(delDir);
     }
 
     private static boolean upload(File file, Path path) throws FileNotFoundException {
@@ -63,14 +66,40 @@ public class FilesystemAPI {
         return files;
     }
 
-    private static boolean createdir(Filepath newDir) throws FileNotFoundException {
+    private static boolean createdir(Path newDir) throws FileNotFoundException {
         try {
-            Files.createDirectory(newDir.toAbs());
+            Files.createDirectory(newDir.toAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    private static boolean deletefp(Filepath toDelete) throws FileNotFoundException {
+        int choice = JOptionPane.showConfirmDialog(null, "Should i delete this?", "Warning", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.YES_OPTION)
+        {
+            // Try block taken from Oracle File class documentation.
+            try {
+                Files.delete(toDelete.getPath().toAbsolutePath());
+            } catch (NoSuchFileException x) {
+                System.err.format("%s: no such" + " file or directory%n", toDelete.getPath().toAbsolutePath());
+                return false;
+            } catch (DirectoryNotEmptyException x) {
+                System.err.format("%s not empty%n", toDelete.getPath().toAbsolutePath());
+                return false;
+            } catch (IOException x) {
+                // File permission problems are caught here.
+                System.err.println(x);
+                return false;
+            }
+            return true;
+        }
+        else
+        {
+            return true;
+        }
     }
 
 }

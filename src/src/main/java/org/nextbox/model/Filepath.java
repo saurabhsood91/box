@@ -20,9 +20,8 @@ public class Filepath {
         return Paths.get(this.path);
     }
 
-    public Path joinPath(String fName) {
-
-        return Paths.get(this.path, fName);
+    public Path prepPath(String fName) {
+        return Paths.get(fName, this.path);
     }
 
     public Path toAbs() {
