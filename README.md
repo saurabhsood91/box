@@ -70,3 +70,8 @@ Stretch Functionalities:
 - Media files
 - Syntax highlighting for code
 - Encrypt files
+
+
+Code Usage:
+Exception handling for delete/move/rename files and directories
+courtesy Oracle documentation: https://docs.oracle.com/javase/tutorial/essential/io/delete.html
