@@ -108,25 +108,4 @@ public class UserActionsController {
         model.addAttribute("currentDirectory", currentDirectory);
         return "home";
     }
-
-    @RequestMapping(value="/delete")
-    public String deleteFile( @RequestParam("fileSelected")String fileToDelete,Model model){
-//        Filepath nPath = new Filepath();
-//        nPath.setPath(currentDirectory);
-//        Path currentPath = nPath.getPath();
-        boolean success = false;
-           try{
-               FilesystemAPI.deleteFile(fileToDelete);
-               success = true;
-           }catch (FileNotFoundException f){
-               model.addAttribute("message", "File not found to delete");
-               return "home";
-           }catch (Exception e){
-               success = false;
-           }
-
-        String deleteStatus = success ? "Successfully deleted file" : "Unable to delete file.Please try later";
-        model.addAttribute("message", deleteStatus);
-        return "home";
-    }
 }
