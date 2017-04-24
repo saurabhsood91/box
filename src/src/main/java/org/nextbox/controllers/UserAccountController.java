@@ -39,11 +39,12 @@ public class UserAccountController {
 
             // Get username
             User user = userManager.getUserByUsername(username);
+            // add user object to model
+            model.addAttribute("user", user);
+
             if(!user.isAdmin()) {
                 httpSession.setAttribute("user", user);
 
-                // add user object to model
-                model.addAttribute("user", user);
                 model.addAttribute("currentDirectory", user.getHomeDirectory());
 
                 // Get home directory
@@ -56,6 +57,8 @@ public class UserAccountController {
                 return "home";
             } else {
                 // TODO return some other page
+                model.addAttribute("message", "Administration Panel");
+                return "admin_home";
             }
 
         }
