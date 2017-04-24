@@ -5,6 +5,8 @@ import org.nextbox.model.Plan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by saurabh on 4/23/17.
  */
@@ -29,5 +31,20 @@ public class PlanManager {
             return true;
         }
         return false;
+    }
+
+    public List getAllPlans() {
+        return planDAO.getAllPlans();
+    }
+
+    public Plan getPlanById(String id) {
+        return planDAO.getPlanById(id);
+    }
+
+    public int modifyPlan(String id, String rate, String space) {
+        long planId = Integer.parseInt(id);
+        double planRate = Double.parseDouble(rate);
+        double planSpace = Double.parseDouble(space);
+        return planDAO.modifyPlan(planId, planRate, planSpace);
     }
 }

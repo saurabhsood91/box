@@ -1,6 +1,7 @@
 package org.nextbox.controllers;
 
 import org.nextbox.managers.PlanManager;
+import org.nextbox.model.Plan;
 import org.nextbox.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by saurabh on 4/23/17.
@@ -76,4 +78,30 @@ public class AdminActionsController {
         }
         return "admin_home";
     }
+
+    @RequestMapping(value = "/admin/modifyplan", method = RequestMethod.GET)
+    public String updatePlan(Model model) {
+        List plans = planManager.getAllPlans();
+        model.addAttribute("plans", plans);
+        return "modifyplan";
+    }
+
+    @RequestMapping(value = "/admin/plan/details", method = RequestMethod.GET)
+    public String planDetails(@RequestParam("id") String id, Model model) {
+        // Get plan details by ID:
+        Plan plan = planManager.getPlanById(id);
+        model.addAttribute("rate", plan.getRate());
+        model.addAttribute("space", plan.getSpace());
+        model.addAttribute("id", plan.getId());
+        return "updateplan";
+    }
+
+    @RequestMapping(value = "/admin/plan/modify", method = RequestMethod.POST)
+    public String modifyPlan(@RequestParam("id") String id, @RequestParam("rate") String space, @RequestParam("rate") String rate, Model model) {
+        planManager.modifyPlan(id, rate, space);
+        model.addAttribute("message", "Plan Modified");
+        return "admin_home";
+    }
+
+
 }
