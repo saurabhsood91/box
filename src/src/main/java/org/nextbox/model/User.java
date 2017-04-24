@@ -53,6 +53,14 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    public String getactivation_status() {
+        return activation_status;
+    }
+
+    public void setactivation_status(String activation_status) {
+        this.activation_status = activation_status;
+    }
+
     @Id
     @GeneratedValue
     @Column(name="id", length=10)
@@ -89,5 +97,9 @@ public class User implements Serializable {
     public boolean isAdmin() {
         return this.getRole().compareTo("admin") == 0;
     }
+
+
+    @Column(name="activation_status")
+    String activation_status;
 
 }
