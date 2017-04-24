@@ -7,6 +7,7 @@ import org.nextbox.model.User;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,12 +33,8 @@ public class UserDAOImpl implements UserDAO {
         String HQL_QUERY = "from User as o where o.userName=?";
         Query query = session.createQuery(HQL_QUERY);
         query.setParameter(0, username);
-
         List list = query.list();
 
-        if(list == null) {
-            return null;
-        }
         User user = (User)list.get(0);
         return user;
     }
@@ -57,5 +54,15 @@ public class UserDAOImpl implements UserDAO {
             session.close();
         }
         return success;
+    }
+
+    public List<String> getExistingUsernames(){
+        Session session = sessionFactory.openSession();
+        List<User> users = (List<User>) session.createCriteria(User.class).list();
+        List<String> userNames = new ArrayList<String>();
+        for(User u : users){
+            userNames.add(u.getUserName());
+        }
+        return userNames;
     }
 }

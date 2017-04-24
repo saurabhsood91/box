@@ -70,7 +70,7 @@ public class UserAccountController {
                 "username", "password"})
     public String createAccount(@RequestParam(value="firstname") String firstName,@RequestParam(value="lastname")String lastName,
                                  @RequestParam(value="email") String email,@RequestParam(value="username") String userName,
-                                 @RequestParam(value="password")String password){
+                                 @RequestParam(value="password")String password,Model model){
         boolean success = false;
         try{
             User user = new User();
@@ -80,11 +80,11 @@ public class UserAccountController {
             user.setUserName(userName);
             user.setPassword(password);
             user.setRole("user");
-            success = userManager.createAccount(user);
+            success = userManager.createAccount(user,model);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return success ? "home" : "index";
+        return success ? "home" : "signup";
     }
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String  signup(){
