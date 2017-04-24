@@ -22,7 +22,14 @@
         <input type="text" name="username"></input><br>
         <label for="password">Password</label>
         <input type="password" name="password" /><br>
+        <label for="plan"> Select Plan </label><select>
+            <option value="1">Trial Plan- 1GB </option>
+            <option value="2">Plan A - 2GB($10 per month)</option>
+            <option value="3">Plan B - 4GB($15 per month)</option>
+            <option value="4">Plan C - 8GB($20 per month)</option>
+        </select><br>
         <input type="submit" value="submit"></input>
+
     </form>
 </body>
 </html>
