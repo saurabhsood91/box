@@ -41,8 +41,8 @@ public class FilesystemAPI {
     private static boolean upload(File file, Path path) throws FileNotFoundException {
         byte b[] = file.getBytes();
 
-        FileOutputStream fos = new FileOutputStream(path.toString() + file.getOriginalFilename());
-        try {
+        FileOutputStream fos = new FileOutputStream(path.toString() + "/" +file.getOriginalFilename());
+                try {
             fos.write(b);
             fos.close();
         } catch (IOException e) {
@@ -67,6 +67,17 @@ public class FilesystemAPI {
         try {
             Files.createDirectory(newpath);
         } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean deleteFile(String fileToDelete) throws FileNotFoundException{
+        java.io.File f = new java.io.File(fileToDelete);
+        try {
+            f.delete();
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
