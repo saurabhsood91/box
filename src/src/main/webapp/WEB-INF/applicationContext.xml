@@ -50,7 +50,8 @@
         </property>
         <property name="annotatedClasses">
             <list>
-                <value>org.nextbox.model.User</value> <!-- Entity classes-->
+                <value>org.nextbox.model.User</value>
+                <value>org.nextbox.model.Plan</value>
             </list>
         </property>
 
