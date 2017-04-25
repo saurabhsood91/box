@@ -7,4 +7,5 @@ import org.nextbox.model.User;
  */
 public interface UserDAO {
     public User getUserByUsername(String string);
+    public boolean modifyActivationStatus(String userName, String activationStatus);
 }

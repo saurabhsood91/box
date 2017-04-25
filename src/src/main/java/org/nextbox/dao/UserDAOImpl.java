@@ -35,10 +35,26 @@ public class UserDAOImpl implements UserDAO {
 
         List list = query.list();
 
-        if(list == null) {
+        if(list == null || list.isEmpty()) {
             return null;
         }
         User user = (User)list.get(0);
         return user;
     }
+
+    public boolean modifyActivationStatus(String userName, String activationStatus) {
+
+        Session session = sessionFactory.openSession();
+
+        String HQL_QUERY = "update User set activation_status=? where userName=?";
+        Query query = session.createQuery(HQL_QUERY);
+        query.setParameter(0, activationStatus);
+        query.setParameter(1, userName);
+        query.executeUpdate();
+        return true; //
+    }
+
+
+
+
 }

@@ -70,6 +70,11 @@
                         <input type="hidden" name="fileSelected" value="${file}"/>
                         <input type="submit" value="delete"/>
                     </form>
+                    <form action="/download">
+                        <input type="hidden" name="fileSelected" value="${file}"/>
+                        <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
+                        <input type="submit" value="download"/>
+                    </form>
             </c:forEach>
         </ul>
     </div>

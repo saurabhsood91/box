@@ -1,8 +1,8 @@
 package org.nextbox.controllers;
 
+import org.nextbox.model.File;
 import org.nextbox.model.Filepath;
 import org.nextbox.model.User;
-import org.nextbox.model.File;
 import org.nextbox.service.FilesystemAPI;
 import org.nextbox.service.FilesystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by saurabh on 3/27/17.
@@ -107,5 +112,14 @@ public class UserActionsController {
         model.addAttribute("files", homeDirectoryContents);
         model.addAttribute("currentDirectory", currentDirectory);
         return "home";
+    }
+    @RequestMapping(value="/download")
+    public void download(HttpServletRequest request,
+                         HttpServletResponse response,
+                         @RequestParam("fileSelected")String fileSelected, @RequestParam("currentDirectory")String currentDirectory, Model model) throws FileNotFoundException {
+
+        // Get session object
+        User user = (User) session.getAttribute("user");
+        boolean downloaded =  FilesystemAPI.download(user,fileSelected,response);
     }
 }

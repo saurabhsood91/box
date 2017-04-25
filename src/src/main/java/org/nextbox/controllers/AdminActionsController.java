@@ -1,6 +1,7 @@
 package org.nextbox.controllers;
 
 import org.nextbox.managers.PlanManager;
+import org.nextbox.managers.UserManager;
 import org.nextbox.model.Plan;
 import org.nextbox.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class AdminActionsController {
 
     @Autowired
     private PlanManager planManager;
+
+    @Autowired
+    private UserManager userManager;
 
     @RequestMapping(value = "/admin/addplan", method = RequestMethod.GET)
     public String createPlan() {
@@ -103,5 +107,29 @@ public class AdminActionsController {
         return "admin_home";
     }
 
+
+    @RequestMapping(value = "/admin/changeActivationStatus", method = RequestMethod.GET)
+    public String changeActivationStatus() {
+        return "changeActivationStatus";
+    }
+
+    @RequestMapping(value = "/admin/changeActivationStatus/changeStatus", method = RequestMethod.POST)
+    public String modifyActivationStatus(@RequestParam("username") String username, @RequestParam("activationStatus") String activationStatus, Model model) {
+        User user = (User)session.getAttribute("user");
+        if(userManager.getUserByUsername(username) == null)
+        {
+            model.addAttribute("message", "username invalid");
+            return "changeActivationStatus";
+        }
+        if(user.getUserName().compareTo(username) == 0)
+        {
+            model.addAttribute("message", "username same as logged in, invalid operation");
+            return "changeActivationStatus";
+        }
+
+        userManager.modifyActivationStatus(username,activationStatus);
+        model.addAttribute("message", "status changed");
+        return "admin_home";
+    }
 
 }

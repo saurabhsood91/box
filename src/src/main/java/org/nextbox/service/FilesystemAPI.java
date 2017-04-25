@@ -1,10 +1,12 @@
 package org.nextbox.service;
 
 
+import org.nextbox.model.Filepath;
 import org.nextbox.model.User;
 import org.nextbox.model.Directory;
 import org.nextbox.model.File;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -71,6 +73,27 @@ public class FilesystemAPI {
             return false;
         }
         return true;
+    }
+
+    public static boolean download(User user, String path, HttpServletResponse response)
+    {
+        Path file = Paths.get(path);
+
+        if(file.toFile().isDirectory())
+            return false;
+
+        response.setContentType("APPLICATION/OCTET-STREAM");
+        response.addHeader("Content-Disposition", "attachment; filename="+path);
+        try
+        {
+            Files.copy(file, response.getOutputStream());
+            response.getOutputStream().flush();
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return  true;
     }
 
 }
