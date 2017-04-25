@@ -41,10 +41,15 @@ public class UserAccountController {
             User user = userManager.getUserByUsername(username);
             // add user object to model
             model.addAttribute("user", user);
+            if(!user.isActive())
+            {
+                model.addAttribute("message", "Inactive username. Contact administrator to reactivate user.");
+                return "index";
+            }
+
+            httpSession.setAttribute("user", user);
 
             if(!user.isAdmin()) {
-                httpSession.setAttribute("user", user);
-
                 model.addAttribute("currentDirectory", user.getHomeDirectory());
 
                 // Get home directory

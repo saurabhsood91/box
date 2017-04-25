@@ -3,6 +3,7 @@ package org.nextbox.controllers;
 import org.nextbox.managers.PlanManager;
 import org.nextbox.managers.UserManager;
 import org.nextbox.model.Plan;
+import org.nextbox.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -113,7 +114,19 @@ public class AdminActionsController {
     }
 
     @RequestMapping(value = "/admin/changeActivationStatus/changeStatus", method = RequestMethod.POST)
-    public String modifyPlan(@RequestParam("username") String username, @RequestParam("activationStatus") String activationStatus, Model model) {
+    public String modifyActivationStatus(@RequestParam("username") String username, @RequestParam("activationStatus") String activationStatus, Model model) {
+        User user = (User)session.getAttribute("user");
+        if(userManager.getUserByUsername(username) == null)
+        {
+            model.addAttribute("message", "username invalid");
+            return "changeActivationStatus";
+        }
+        if(user.getUserName().compareTo(username) == 0)
+        {
+            model.addAttribute("message", "username same as logged in, invalid operation");
+            return "changeActivationStatus";
+        }
+
         userManager.modifyActivationStatus(username,activationStatus);
         model.addAttribute("message", "status changed");
         return "admin_home";

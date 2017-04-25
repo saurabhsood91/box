@@ -6,7 +6,6 @@
 <body>
     <h1>NextBox</h1>
 
-    <h2>${message}</h2>
     <h4>Change Activation Status</h4>
     <div>
 
@@ -18,6 +17,8 @@
             <input type="submit" value="Change Activation Status" />
     </form>
     </div>
+    <h2>${message}</h2>
+
 
 </body>
 </html>

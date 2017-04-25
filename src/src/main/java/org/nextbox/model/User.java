@@ -102,4 +102,8 @@ public class User implements Serializable {
     @Column(name="activation_status")
     String activation_status;
 
+    public boolean isActive() {
+        return this.getactivation_status().compareTo("active") == 0;
+    }
+
 }

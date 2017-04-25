@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
 
         List list = query.list();
 
-        if(list == null) {
+        if(list == null || list.isEmpty()) {
             return null;
         }
         User user = (User)list.get(0);
