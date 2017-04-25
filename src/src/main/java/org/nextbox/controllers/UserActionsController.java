@@ -120,26 +120,6 @@ public class UserActionsController {
 
         // Get session object
         User user = (User) session.getAttribute("user");
-
-        Filepath nPath = new Filepath();
-        nPath.setPath(currentDirectory);
-        Path currentDir = nPath.getPath();
-        Path file = Paths.get( fileSelected);
-
-        if(file.toFile().isDirectory())
-            return;
-
-        response.setContentType("APPLICATION/OCTET-STREAM");
-        response.addHeader("Content-Disposition", "attachment; filename="+fileSelected);
-        try
-        {
-            Files.copy(file, response.getOutputStream());
-            response.getOutputStream().flush();
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-
+        boolean downloaded =  FilesystemAPI.download(user,fileSelected,response);
     }
 }
