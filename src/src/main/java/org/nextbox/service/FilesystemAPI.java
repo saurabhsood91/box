@@ -81,7 +81,7 @@ public class FilesystemAPI {
     }
 
     private static boolean deletefp(Filepath toDelete) throws FileNotFoundException {
-        int choice = JOptionPane.showConfirmDialog(null, "Should i delete this?", "Warning", JOptionPane.YES_NO_OPTION);
+        int choice = JOptionPane.showConfirmDialog(null, "Really delete this?", "Warning", JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.YES_OPTION)
         {
             // Try block taken from Oracle File class documentation: https://docs.oracle.com/javase/tutorial/essential/io/delete.html
@@ -102,7 +102,7 @@ public class FilesystemAPI {
         }
         else
         {
-            return true;
+            return false;
         }
     }
 
