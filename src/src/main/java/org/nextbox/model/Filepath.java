@@ -29,7 +29,7 @@ public class Filepath {
     }
 
     public File fptoFile() {
-        return Paths.get(this.path).toFile();
+        return Paths.get(this.path).toAbsolutePath().toFile();
     }
 
     public boolean pathIsFile() {
