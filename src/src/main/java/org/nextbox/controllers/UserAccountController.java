@@ -4,6 +4,7 @@ package org.nextbox.controllers;
  * Created by saurabh on 3/19/17.
  */
 
+import org.nextbox.managers.PlanManager;
 import org.nextbox.managers.UserManager;
 import org.nextbox.model.User;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,9 @@ public class UserAccountController {
 
     @Autowired
     private UserManager userManager;
+
+    @Autowired
+    private PlanManager planManager;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, params = {"username", "password"})
     public String login(@RequestParam(value="username") String username, @RequestParam(value="password") String password, Model model) {
@@ -67,10 +71,10 @@ public class UserAccountController {
     }
 
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST, params = {"firstname","lastname","email",
-                "username", "password"})
+                "username", "password","plan"})
     public String createAccount(@RequestParam(value="firstname") String firstName,@RequestParam(value="lastname")String lastName,
                                  @RequestParam(value="email") String email,@RequestParam(value="username") String userName,
-                                 @RequestParam(value="password")String password,Model model){
+                                 @RequestParam(value="password")String password, @RequestParam(value="plan")String plan,Model model){
         boolean success = false;
         try{
             User user = new User();
@@ -79,6 +83,7 @@ public class UserAccountController {
             user.setEmail(email);
             user.setUserName(userName);
             user.setPassword(password);
+            user.setPlan(planManager.getPlanById(plan));
             user.setRole("user");
             success = userManager.createAccount(user,model);
         }catch (Exception e){

@@ -12,19 +12,7 @@ import java.sql.Timestamp;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 
 @Entity
@@ -43,13 +31,18 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setPassword(String password) { this.password = password;}
+
+    public void setPlan(Plan plan) {this.plan = plan;}
+
     public String getLastname() {
         return lastName;
     }
@@ -62,21 +55,21 @@ public class User implements Serializable {
         return email;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public Plan getPlan() { return plan;}
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+
 
     @Id
     @GeneratedValue
@@ -103,6 +96,14 @@ public class User implements Serializable {
 
     @Column(name="home_dir")
     String homeDirectory;
+
+//    @Column(name="plan")
+//    String plan;
+    @ManyToOne
+    @JoinColumn(name="plan_id",referencedColumnName="id")
+    Plan plan;
+
+
 
     public Path getHomeDirectory() {
         return Paths.get(homeDirectory);
