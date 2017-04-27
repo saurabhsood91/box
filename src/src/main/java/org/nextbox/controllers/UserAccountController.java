@@ -70,5 +70,4 @@ public class UserAccountController {
         model.addAttribute("message", "Invalid username or password!");
         return "index";
     }
-
 }
