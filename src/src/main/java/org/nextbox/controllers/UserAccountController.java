@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.nextbox.service.*;
@@ -71,10 +72,10 @@ public class UserAccountController {
     }
 
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST, params = {"firstname","lastname","email",
-                "username", "password","plan"})
+                "username", "password","selectedPlan"})
     public String createAccount(@RequestParam(value="firstname") String firstName,@RequestParam(value="lastname")String lastName,
                                  @RequestParam(value="email") String email,@RequestParam(value="username") String userName,
-                                 @RequestParam(value="password")String password, @RequestParam(value="plan")String plan,Model model){
+                                 @RequestParam(value="password")String password, @RequestParam(value="selectedPlan")String planId ,Model model){
         boolean success = false;
         try{
             User user = new User();
@@ -83,7 +84,7 @@ public class UserAccountController {
             user.setEmail(email);
             user.setUserName(userName);
             user.setPassword(password);
-            user.setPlan(planManager.getPlanById(plan));
+            user.setPlan(planManager.getPlanById(planId));
             user.setRole("user");
             success = userManager.createAccount(user,model);
         }catch (Exception e){
@@ -92,7 +93,11 @@ public class UserAccountController {
         return success ? "home" : "signup";
     }
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String  signup(){
+    public String  signup(Model model){
+
+        List plans = planManager.getAllPlans();
+        model.addAttribute("plans", plans);
+
         return "signup";
     }
 

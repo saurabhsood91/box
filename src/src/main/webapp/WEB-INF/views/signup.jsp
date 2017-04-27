@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: aniru
@@ -23,12 +24,15 @@
         <label for="password">Password</label>
         <input type="password" name="password" /><br>
         <label > Select Plan </label>
-        <select name="plan">
-            <option value="1">Trial Plan- 0.5GB </option>
-            <option value="2">Plan A - 2GB($5 per month)</option>
-            <option value="3">Plan B - 8GB($10 per month)</option>
-            <option value="4">Plan C - 32GB($15 per month)</option>
-            <option value="5">Plan D - 64GB($20 per month)</option>
+        <select name="selectedPlan">
+            <%--<option value="1">Trial Plan- 0.5GB </option>--%>
+            <%--<option value="2">Plan A - 2GB($5 per month)</option>--%>
+            <%--<option value="3">Plan B - 8GB($10 per month)</option>--%>
+            <%--<option value="4">Plan C - 32GB($15 per month)</option>--%>
+            <%--<option value="5">Plan D - 64GB($20 per month)</option>--%>
+            <c:forEach var="plan" items="${plans}">
+                <option value="${plan.id}">Rate:\$${plan.rate}, Space: ${plan.space} GB</option>
+            </c:forEach>
         </select><br>
         <input type="submit" value="submit"></input>
 
