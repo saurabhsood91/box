@@ -75,3 +75,7 @@ Stretch Functionalities:
 References:
 - Hibernate:
   http://www.roseindia.net/spring/spring4/login-form-using-spring-mvc-and-hibernate.shtml
+- Search file : 
+  http://stackoverflow.com/questions/15624226/java-search-for-files-in-a-directory
+- Download file :
+  http://howtodoinjava.com/spring/spring-mvc/spring-mvc-download-file-controller-example/
