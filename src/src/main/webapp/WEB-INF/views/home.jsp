@@ -16,6 +16,10 @@
 <body>
     <h1>${message}</h1>
     <h2>${user.userName}</h2>
+    <h3>Change Plan</h3>
+    <ul>
+        <li><a href="/user/changeplan">Modify Plan</a></li>
+    </ul>
     <form action="/upload" method="post" enctype="multipart/form-data">
         <p>Select a File:</p>
         <input type="file" name="uploadedfile" />
@@ -31,7 +35,7 @@
     </form>
     <div>
         <c:if test="${searchResults != null}">
-            <h3>Search Results</h3>
+            <h4>Search Results</h4>
             <ul>
                 <c:forEach var="searchResult" items="${searchResults}">
                     <li>${searchResult}</li>
@@ -61,7 +65,7 @@
         </ul>
     </div>
     <div>
-        <h5>Directory Contents</h5>
+        <h6>Directory Contents</h6>
         <ul>
             <c:forEach var="file" items="${files}">
                 <li>${file}</li>

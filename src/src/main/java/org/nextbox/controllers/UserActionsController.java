@@ -1,12 +1,13 @@
 package org.nextbox.controllers;
 
+import org.nextbox.managers.PlanManager;
 import org.nextbox.model.File;
 import org.nextbox.model.Filepath;
+import org.nextbox.model.Plan;
 import org.nextbox.model.User;
 import org.nextbox.service.FilesystemAPI;
 import org.nextbox.service.FilesystemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.support.NullValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Created by saurabh on 3/27/17.
@@ -29,6 +28,9 @@ import java.nio.file.Paths;
 
 @Controller
 public class UserActionsController {
+
+    @Autowired
+    private PlanManager planManager;
 
     @Autowired
     private HttpSession session;
@@ -189,6 +191,38 @@ public class UserActionsController {
         // Get session object
         User user = (User) session.getAttribute("user");
         boolean downloaded =  FilesystemAPI.download(user,fileSelected,response);
+    }
+
+    @RequestMapping(value = "/user/plan/details", method = RequestMethod.GET)
+    public String planDetails(Model model) {
+        User user = (User) session.getAttribute("user");
+        long id = user.getId();
+        // Get plan details by ID:
+        Plan plan = planManager.getPlanById(String.valueOf(id));
+        model.addAttribute("rate", plan.getRate());
+        model.addAttribute("space", plan.getSpace());
+        model.addAttribute("id", plan.getId());
+        return "changeplan";
+    }
+
+    @RequestMapping(value = "/user/changeplan", method = RequestMethod.GET)
+    public String changePlan(Model model) {
+        User user = (User) session.getAttribute("user");
+        long id = user.getId();
+        Plan plan = planManager.getPlanById(String.valueOf(id));
+        model.addAttribute("plan", plan);
+        return "changeplan";
+    }
+
+    @RequestMapping(value = "/user/plan/change", method = RequestMethod.POST)
+    public String modifyPlan(@RequestParam("space") String space, Model model) {
+        User user = (User) session.getAttribute("user");
+        long id = user.getId();
+        Plan plan = planManager.getPlanById(String.valueOf(id));
+        Double rate = plan.getRate();
+        planManager.modifyPlan(String.valueOf(id), String.valueOf(rate), space);
+        model.addAttribute("message", "Plan Modified");
+        return "home";
     }
 }
 
