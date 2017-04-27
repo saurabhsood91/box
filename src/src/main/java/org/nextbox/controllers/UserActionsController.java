@@ -113,7 +113,6 @@ public class UserActionsController {
         model.addAttribute("currentDirectory", currentDirectory);
         return "home";
     }
-<<<<<<< HEAD
     @RequestMapping(value="/download")
     public void download(HttpServletRequest request,
                          HttpServletResponse response,
@@ -122,27 +121,5 @@ public class UserActionsController {
         // Get session object
         User user = (User) session.getAttribute("user");
         boolean downloaded =  FilesystemAPI.download(user,fileSelected,response);
-=======
-
-    @RequestMapping(value="/delete")
-    public String deleteFile( @RequestParam("fileSelected")String fileToDelete,Model model){
-//        Filepath nPath = new Filepath();
-//        nPath.setPath(currentDirectory);
-//        Path currentPath = nPath.getPath();
-        boolean success = false;
-           try{
-               FilesystemAPI.deleteFile(fileToDelete);
-               success = true;
-           }catch (FileNotFoundException f){
-               model.addAttribute("message", "File not found to delete");
-               return "home";
-           }catch (Exception e){
-               success = false;
-           }
-
-        String deleteStatus = success ? "Successfully deleted file" : "Unable to delete file.Please try later";
-        model.addAttribute("message", deleteStatus);
-        return "home";
->>>>>>> ani_deleteFile
     }
 }
