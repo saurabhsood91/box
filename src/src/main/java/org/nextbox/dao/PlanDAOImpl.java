@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.nextbox.model.Plan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -26,6 +27,7 @@ public class PlanDAOImpl implements PlanDAO {
     }
 
     @Resource(name="sessionFactory")
+    @Autowired
     protected SessionFactory sessionFactory;
 
     public Plan getPlan(double ratePerGB, double maxSpace) {
@@ -48,7 +50,8 @@ public class PlanDAOImpl implements PlanDAO {
 
     public List getAllPlans() {
         Session session = sessionFactory.openSession();
-        List plans = session.createCriteria(Plan.class).setProjection(Projections.property("id")).list();
+        List plans = session.createCriteria(Plan.class).list();
+//                session.createCriteria(Plan.class).setProjection(Projections.property("id")).list();
         return plans;
     }
 

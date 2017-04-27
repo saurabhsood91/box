@@ -4,54 +4,72 @@ package org.nextbox.model;
  * Created by saurabh on 3/19/17.
  */
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.util.List;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 
 @Entity
 @Table(name = "account")
 public class User implements Serializable {
 
-    public String getUserName() {
-        return userName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setPassword(String password) { this.password = password;}
+
+    public void setPlan(Plan plan) {this.plan = plan;}
+
+    public String getLastname() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public Plan getPlan() { return plan;}
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+
 
     public String getactivation_status() {
         return activation_status;
@@ -72,6 +90,29 @@ public class User implements Serializable {
     @Column(name="password")
     String password;
 
+    @Column(name="lastname")
+    String lastName;
+
+    @Column(name="firstname")
+    String firstName;
+
+    @Column(name="email")
+    String email;
+
+    @Column(name="role")
+    String role;
+
+    @Column(name="home_dir")
+    String homeDirectory;
+
+//    @Column(name="plan")
+//    String plan;
+    @ManyToOne
+    @JoinColumn(name="plan_id",referencedColumnName="id")
+    Plan plan;
+
+
+
     public Path getHomeDirectory() {
         return Paths.get(homeDirectory);
     }
@@ -80,8 +121,7 @@ public class User implements Serializable {
         this.homeDirectory = homeDirectory;
     }
 
-    @Column(name="home_dir")
-    String homeDirectory;
+
 
     public String getRole() {
         return role;
@@ -90,9 +130,6 @@ public class User implements Serializable {
     public void setRole(String role) {
         this.role = role;
     }
-
-    @Column(name="role")
-    String role;
 
     public boolean isAdmin() {
         return this.getRole().compareTo("admin") == 0;

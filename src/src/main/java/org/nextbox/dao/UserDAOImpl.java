@@ -7,6 +7,7 @@ import org.nextbox.model.User;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,16 +33,19 @@ public class UserDAOImpl implements UserDAO {
         String HQL_QUERY = "from User as o where o.userName=?";
         Query query = session.createQuery(HQL_QUERY);
         query.setParameter(0, username);
-
         List list = query.list();
 
+<<<<<<< HEAD
         if(list == null || list.isEmpty()) {
             return null;
         }
+=======
+>>>>>>> ani
         User user = (User)list.get(0);
         return user;
     }
 
+<<<<<<< HEAD
     public boolean modifyActivationStatus(String userName, String activationStatus) {
 
         Session session = sessionFactory.openSession();
@@ -57,4 +61,32 @@ public class UserDAOImpl implements UserDAO {
 
 
 
+=======
+    public boolean createAccount(User user) {
+        boolean success = false;
+        Session session = sessionFactory.openSession();
+        try{
+            session.save(user);
+            success = true;
+//            String HQL_QUERY = "from User as o where o.userName=?,?,?";
+//            Query query = session.createQuery(HQL_QUERY);
+//            query.executeUpdate();
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            session.close();
+        }
+        return success;
+    }
+
+    public List<String> getExistingUsernames(){
+        Session session = sessionFactory.openSession();
+        List<User> users = (List<User>) session.createCriteria(User.class).list();
+        List<String> userNames = new ArrayList<String>();
+        for(User u : users){
+            userNames.add(u.getUserName());
+        }
+        return userNames;
+    }
+>>>>>>> ani
 }
