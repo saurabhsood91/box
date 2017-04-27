@@ -14,8 +14,10 @@ public class UserManager {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private UserDAO userDAO;
+
     public User getUserByUsername(String username) {
         return userService.getUserByUsername(username);
     }

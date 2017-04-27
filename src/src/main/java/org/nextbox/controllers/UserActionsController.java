@@ -1,6 +1,7 @@
 package org.nextbox.controllers;
 
 import org.nextbox.model.File;
+import org.nextbox.managers.UserManager;
 import org.nextbox.model.Filepath;
 import org.nextbox.model.User;
 import org.nextbox.service.FilesystemAPI;
@@ -18,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -31,6 +31,9 @@ public class UserActionsController {
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private UserManager userManager;
 
     @RequestMapping(value="/upload", method = RequestMethod.POST)
     public String uploadFile(@RequestParam("uploadedfile")MultipartFile file, @RequestParam("currentDirectory")String currentDirectory, Model model) throws FileNotFoundException {
@@ -121,5 +124,33 @@ public class UserActionsController {
         // Get session object
         User user = (User) session.getAttribute("user");
         boolean downloaded =  FilesystemAPI.download(user,fileSelected,response);
+    }
+
+    @RequestMapping(value = "/sharefile", method = RequestMethod.GET)
+    public String shareFile(@RequestParam("fileToShare") String fileToShare, Model model) {
+        // Get the user from the sesion
+        User user = (User)session.getAttribute("user");
+        model.addAttribute("fileToShare", fileToShare);
+        return "sharefile";
+    }
+
+    @RequestMapping(value="/share", method=RequestMethod.POST)
+    public String share(@RequestParam("fileToShare") String fileToShare, @RequestParam("userToShare") String userToShare, Model model) throws IOException {
+        User user = (User)session.getAttribute("user");
+        User secondUser = userManager.getUserByUsername(userToShare);
+        user.shareFile(fileToShare, secondUser);
+
+        // Set model properties
+        model.addAttribute("user", user);
+        model.addAttribute("currentDirectory", user.getHomeDirectory());
+
+        // Get home directory
+        Path homeDirectory = user.getHomeDirectory();
+        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
+
+        model.addAttribute("files", homeDirectoryContents);
+        model.addAttribute("message", "File shared with " + userToShare);
+
+        return "home";
     }
 }

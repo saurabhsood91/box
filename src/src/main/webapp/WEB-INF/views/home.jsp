@@ -75,6 +75,10 @@
                         <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
                         <input type="submit" value="download"/>
                     </form>
+                    <form action="/sharefile" method="get">
+                        <input type="hidden" value="${file}" name="fileToShare" />
+                    <input type="submit" value="Share File" />
+                </form>
             </c:forEach>
         </ul>
     </div>

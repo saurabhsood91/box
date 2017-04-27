@@ -70,3 +70,8 @@ Stretch Functionalities:
 - Media files
 - Syntax highlighting for code
 - Encrypt files
+
+
+References:
+- Hibernate:
+  http://www.roseindia.net/spring/spring4/login-form-using-spring-mvc-and-hibernate.shtml
