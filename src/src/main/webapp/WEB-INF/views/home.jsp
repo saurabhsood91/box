@@ -18,7 +18,7 @@
     <h2>${user.userName}</h2>
     <h3>Change Plan</h3>
     <ul>
-        <li><a href="/user/changeplan">Modify Plan</a></li>
+        <li><a href="/userChangePlan">Modify Plan</a></li>
     </ul>
     <form action="/upload" method="post" enctype="multipart/form-data">
         <p>Select a File:</p>

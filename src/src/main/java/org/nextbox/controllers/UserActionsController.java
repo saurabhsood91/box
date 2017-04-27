@@ -193,29 +193,19 @@ public class UserActionsController {
         boolean downloaded =  FilesystemAPI.download(user,fileSelected,response);
     }
 
-    @RequestMapping(value = "/user/plan/details", method = RequestMethod.GET)
-    public String planDetails(Model model) {
-        User user = (User) session.getAttribute("user");
-        long id = user.getId();
-        // Get plan details by ID:
-        Plan plan = planManager.getPlanById(String.valueOf(id));
-        model.addAttribute("rate", plan.getRate());
-        model.addAttribute("space", plan.getSpace());
-        model.addAttribute("id", plan.getId());
-        return "changeplan";
-    }
-
-    @RequestMapping(value = "/user/changeplan", method = RequestMethod.GET)
-    public String changePlan(Model model) {
+    @RequestMapping(value="/userChangePlan")
+    public String userChangePlan(Model model) {
         User user = (User) session.getAttribute("user");
         long id = user.getId();
         Plan plan = planManager.getPlanById(String.valueOf(id));
         model.addAttribute("plan", plan);
+        model.addAttribute("rate", String.valueOf(plan.getRate()));
+        model.addAttribute("space", String.valueOf(plan.getSpace()));
         return "changeplan";
     }
 
-    @RequestMapping(value = "/user/plan/change", method = RequestMethod.POST)
-    public String modifyPlan(@RequestParam("space") String space, Model model) {
+    @RequestMapping(value="/userPlanChange", method = RequestMethod.POST)
+    public String userModifyPlan(@RequestParam("space") String space, Model model) {
         User user = (User) session.getAttribute("user");
         long id = user.getId();
         Plan plan = planManager.getPlanById(String.valueOf(id));
