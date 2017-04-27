@@ -28,7 +28,7 @@
             <option value="2">Plan A - 2GB($5 per month)</option>
             <option value="3">Plan B - 8GB($10 per month)</option>
             <option value="4">Plan C - 32GB($15 per month)</option>
-            <option value="5">Plan C - 64GB($20 per month)</option>
+            <option value="5">Plan D - 64GB($20 per month)</option>
         </select><br>
         <input type="submit" value="submit"></input>
 
