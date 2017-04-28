@@ -6,6 +6,7 @@ import org.nextbox.managers.UserManager;
 import org.nextbox.model.Filepath;
 import org.nextbox.model.Plan;
 import org.nextbox.model.User;
+import org.nextbox.service.BillingService;
 import org.nextbox.service.FilesystemAPI;
 import org.nextbox.service.FilesystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -262,6 +263,16 @@ public class UserActionsController {
         model.addAttribute("userId",userId);
         return "credit_card";
     }
+
+    @RequestMapping(value = "/viewbill", method=RequestMethod.GET)
+    public String viewBill(Model model) {
+        User user = (User) session.getAttribute("user");
+        String bill = BillingService.calculateBillForUser(user);
+        model.addAttribute("bill", bill);
+        model.addAttribute("currentDirectory", user.getHomeDirectory().toString());
+        return "bill";
+    }
+
 }
 
 
