@@ -1,8 +1,10 @@
 package org.nextbox.controllers;
 
+import org.nextbox.managers.PlanManager;
 import org.nextbox.model.File;
 import org.nextbox.managers.UserManager;
 import org.nextbox.model.Filepath;
+import org.nextbox.model.Plan;
 import org.nextbox.model.User;
 import org.nextbox.service.FilesystemAPI;
 import org.nextbox.service.FilesystemService;
@@ -20,7 +22,6 @@ import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Created by saurabh on 3/27/17.
@@ -28,6 +29,9 @@ import java.nio.file.Paths;
 
 @Controller
 public class UserActionsController {
+
+    @Autowired
+    private PlanManager planManager;
 
     @Autowired
     private HttpSession session;
@@ -77,12 +81,10 @@ public class UserActionsController {
 
     @RequestMapping(value="/returnToHome", method = RequestMethod.POST)
     public String returnToHome(@RequestParam("currentDirectory")String currentDirectory, Model model){
-        Filepath nPath = new Filepath();
-        nPath.setPath(currentDirectory);
-        Path currentDir = nPath.getPath();
-        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(currentDir);
-
+        // Get session object
         User user = (User)session.getAttribute("user");
+        Path homeDirectory = user.getHomeDirectory();
+        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
 
         model.addAttribute("currentDirectory",currentDirectory);
         model.addAttribute("files", homeDirectoryContents);
@@ -95,12 +97,15 @@ public class UserActionsController {
 
         // Get session object
         User user = (User)session.getAttribute("user");
+        // Get current directory
+        Path homeDirectory = user.getHomeDirectory();
 
-        Filepath nPath = new Filepath();
-        nPath.setPath(currentDirectory);
-        Path currentDir = nPath.getPath();
-
-        boolean created = FilesystemAPI.createDir(user, currentDir, dirName);
+        //Filepath currentDir = new Filepath();
+        //currentDir.setPath(currentDirectory);
+        //System.out.println(homeDirectory.toAbsolutePath().relativize(Paths.get(dirName).toAbsolutePath()).toString());
+        Filepath newDir = new Filepath();
+        newDir.setPath(dirName);
+        boolean created = FilesystemAPI.createDir(user, newDir);
 
         if(created) {
             model.addAttribute("message", "Directory successfully created");
@@ -108,14 +113,80 @@ public class UserActionsController {
         else {
             model.addAttribute("message", "Failed to create directory");
         }
-        // Get home directory
-        Path homeDirectory = user.getHomeDirectory();
-        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
 
-        model.addAttribute("files", homeDirectoryContents);
+        java.io.File[] directoryContents = FilesystemService.getDirContents(homeDirectory);
+        model.addAttribute("files", directoryContents);
         model.addAttribute("currentDirectory", currentDirectory);
         return "home";
     }
+
+    @RequestMapping(value="/view")
+    public String View(@RequestParam("currentDirectory")String currentDirectory, @RequestParam("fileSelected")String fileSelected, Model model){
+        Filepath nPath = new Filepath();
+        nPath.setPath(fileSelected);
+
+        if (nPath.pathIsDir()) {
+            Path newDir = nPath.toAbs();
+            java.io.File[] directoryContents = FilesystemService.getDirContents(newDir);
+
+            User user = (User) session.getAttribute("user");
+            model.addAttribute("searchResults",null);
+            model.addAttribute("files", directoryContents);
+
+            return "home";
+        }
+        else {
+            return "home";
+        }
+    }
+
+    @RequestMapping(value="/delete")
+    public String Delete(@RequestParam("fileSelected")String fileSelected, Model model) throws FileNotFoundException {
+        // Get session object
+        User user = (User)session.getAttribute("user");
+        // Get current directory
+        Path homeDirectory = user.getHomeDirectory();
+        Filepath delPath = new Filepath();
+        delPath.setPath(fileSelected);
+
+        boolean deleted = FilesystemAPI.deleteFP(user, delPath);
+
+        if(deleted) {
+            model.addAttribute("message", "Object successfully deleted");
+        }
+        else {
+            model.addAttribute("message", "Failed to delete object");
+        }
+
+        java.io.File[] directoryContents = FilesystemService.getDirContents(homeDirectory);
+        model.addAttribute("files", directoryContents);
+        //model.addAttribute("currentDirectory", currentDirectory);
+        return "home";
+    }
+
+    @RequestMapping(value="/move")
+    public String Move(@RequestParam("fileSelected")String fileSelected, Model model) throws IOException {
+        // Get session object
+        User user = (User) session.getAttribute("user");
+        // Get current directory
+        Path homeDirectory = user.getHomeDirectory();
+        Filepath sourcePath = new Filepath();
+        sourcePath.setPath(fileSelected);
+
+        boolean moved = FilesystemAPI.moveRN(user, sourcePath);
+
+        if (moved) {
+            model.addAttribute("message", "Object successfully moved");
+        } else {
+            model.addAttribute("message", "Failed to move object");
+        }
+
+        java.io.File[] directoryContents = FilesystemService.getDirContents(homeDirectory);
+        model.addAttribute("files", directoryContents);
+
+        return "home";
+    }
+
     @RequestMapping(value="/download")
     public void download(HttpServletRequest request,
                          HttpServletResponse response,
@@ -163,4 +234,32 @@ public class UserActionsController {
         model.addAttribute("freeSpace", "placeholder");
         return "viewUsage";
     }
+
+    @RequestMapping(value="/userChangePlan")
+    public String userChangePlan(Model model) {
+        User user = (User) session.getAttribute("user");
+        long id = user.getId();
+        Plan plan = planManager.getPlanById(String.valueOf(id));
+        model.addAttribute("plan", plan);
+        model.addAttribute("rate", String.valueOf(plan.getRate()));
+        model.addAttribute("space", String.valueOf(plan.getSpace()));
+        return "changeplan";
+    }
+
+    @RequestMapping(value="/userPlanChange", method = RequestMethod.POST)
+    public String userModifyPlan(@RequestParam("space") String space, Model model) {
+        User user = (User) session.getAttribute("user");
+        long id = user.getId();
+        Plan plan = planManager.getPlanById(String.valueOf(id));
+        Double rate = plan.getRate();
+        planManager.modifyPlan(String.valueOf(id), String.valueOf(rate), space);
+        model.addAttribute("message", "Plan Modified");
+        return "home";
+    }
 }
+
+
+
+
+
+

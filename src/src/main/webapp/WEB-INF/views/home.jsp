@@ -16,6 +16,10 @@
 <body>
     <h1>${message}</h1>
     <h2>${user.userName}</h2>
+    <h3>Change Plan</h3>
+    <ul>
+        <li><a href="/userChangePlan">Modify Plan</a></li>
+    </ul>
     <form action="/upload" method="post" enctype="multipart/form-data">
         <p>Select a File:</p>
         <input type="file" name="uploadedfile" />
@@ -24,14 +28,14 @@
     </form>
     <form action="/search" method="post">
         <p>Search : </p>
-        <input type="text" name="searchTerm" value="${searchTerm}"></input>
+        <input type="text" name="searchTerm" value="${searchTerm}"/>
         <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
-        <input type="submit" value="Search"></input>
+        <input type="submit" value="Search"/>
         <p>${term}</p>
     </form>
     <div>
         <c:if test="${searchResults != null}">
-            <h3>Search Results</h3>
+            <h4>Search Results</h4>
             <ul>
                 <c:forEach var="searchResult" items="${searchResults}">
                     <li>${searchResult}</li>
@@ -44,7 +48,7 @@
         </c:if>
     </div>
     <div>
-        <h4>Create a Directory</h4>
+        <h5>Create a Directory</h5>
         <form action="/createDir">
             <p>Specify name:</p>
             <input type="text" name="createDirName"/>
@@ -60,11 +64,20 @@
         </form>
     </div>
     <div>
-        <h5>Directory Contents</h5>
+        <ul>
+            <form action="/returnToHome" method="post">
+                <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
+                <input type="submit" value="Return to home"/>
+            </form>
+        </ul>
+    </div>
+    <div>
+        <h6>Directory Contents</h6>
         <ul>
             <c:forEach var="file" items="${files}">
                 <li>${file}</li>
                     <form action="/view">
+                        <input type="hidden" name="currentDirectory" value="${currentDirectory}"/>
                         <input type="hidden" name="fileSelected" value="${file}"/>
                         <input type="submit" value="view"/>
                     </form>

@@ -2,6 +2,7 @@ package org.nextbox.managers;
 
 import org.nextbox.beans.NextboxProperties;
 import org.nextbox.dao.UserDAO;
+import org.nextbox.model.Filepath;
 import org.nextbox.model.User;
 import org.nextbox.service.FilesystemAPI;
 import org.nextbox.service.FilesystemService;
@@ -44,7 +45,10 @@ public class UserManager {
 
         Path basePath = Paths.get(baseDir);
         Path homeDir = Paths.get(baseDir, user.getUserName());
-        FilesystemAPI.createDir(user, basePath, user.getUserName());
+
+        Path newPath = Paths.get(basePath.toString(), user.getUserName());
+
+        FilesystemAPI.createdir(newPath);
         user.setHomeDirectory(homeDir.toAbsolutePath().toString());
 
         if (existingUser == null || existingUser.isEmpty()){

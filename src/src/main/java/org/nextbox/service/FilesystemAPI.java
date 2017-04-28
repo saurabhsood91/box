@@ -1,6 +1,7 @@
 package org.nextbox.service;
 
 
+import org.apache.commons.io.FileUtils;
 import org.nextbox.model.Filepath;
 import org.nextbox.model.User;
 import org.nextbox.model.Directory;
@@ -10,11 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.file.*;
 import java.util.ArrayList;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 /**
@@ -37,8 +37,17 @@ public class FilesystemAPI {
         return upload(file, path);
     }
 
-    public static boolean createDir(User user, Path currentDir, String newDir) throws FileNotFoundException {
-        return createdir(user, currentDir, newDir);
+    public static boolean createDir(User user, Filepath newDir) throws FileNotFoundException {
+        return createdir(Paths.get(user.getHomeDirectory().toAbsolutePath().toString(),
+                newDir.getPath().toString()));
+    }
+
+    public static boolean deleteFP(User user, Filepath delDir) throws FileNotFoundException {
+        return deletefp(delDir);
+    }
+
+    public static boolean moveRN(User user, Filepath source) throws IOException {
+        return movern(user.getHomeDirectory(), source);
     }
 
     private static boolean upload(File file, Path path) throws FileNotFoundException {
@@ -67,12 +76,76 @@ public class FilesystemAPI {
         return files;
     }
 
-    private static boolean createdir(User user, Path currentPath, String newDir) throws FileNotFoundException {
-        Path newpath = Paths.get(currentPath.toString(), newDir);
+    public static boolean createdir(Path newDir) throws FileNotFoundException {
         try {
-            Files.createDirectory(newpath);
+            Files.createDirectory(newDir.toAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean deletefp(Filepath toDelete) throws FileNotFoundException {
+        int choice = JOptionPane.showConfirmDialog(null, "Really delete this?", "Warning", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.YES_OPTION)
+        {
+            if (toDelete.pathIsDir()) {
+                // Try block taken from Oracle File class documentation: https://docs.oracle.com/javase/tutorial/essential/io/delete.html
+                try {
+                    Files.delete(toDelete.getPath().toAbsolutePath());
+                } catch (NoSuchFileException x) {
+                    System.err.format("%s: no such" + " file or directory%n", toDelete.getPath().toAbsolutePath());
+                    return false;
+                } catch (DirectoryNotEmptyException y) {
+                    System.err.format("%s not empty%n", toDelete.getPath().toAbsolutePath());
+                    int recurse = JOptionPane.showConfirmDialog(null, "Recursively delete directory?", "Warning", JOptionPane.YES_NO_OPTION);
+                    if (recurse == JOptionPane.YES_OPTION) {
+                        try {
+                            FileUtils.deleteDirectory(toDelete.fptoFile());
+                        } catch (NoSuchFileException z) {
+                            System.err.format("%s: no such" + " file or directory%n", toDelete.getPath().toAbsolutePath());
+                            return false;
+                        } catch (IOException w) {
+                            // File permission problems are caught here.
+                            System.err.println(w);
+                            return false;
+                        }
+                    }
+                    else {
+                        return true;
+                    }
+                } catch (IOException x) {
+                    // File permission problems are caught here.
+                    System.err.println(x);
+                    return false;
+                }
+                return true;
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private static boolean movern(Path homeDir, Filepath source) throws IOException {
+        String dest = JOptionPane.showInputDialog("Type new name or destination, relative to ~/");
+        Path relDest = Paths.get(homeDir.toAbsolutePath().toString(), dest);
+
+        // Try block taken from Oracle File class documentation: https://docs.oracle.com/javase/tutorial/essential/io/delete.html
+        try {
+            Files.move(source.getPath(), relDest);
+        } catch (NoSuchFileException x) {
+            System.err.format("%s: no such" + " file or directory%n", source.getPath().toAbsolutePath());
+            return false;
+        } catch (DirectoryNotEmptyException x) {
+            System.err.format("%s not empty%n", source.getPath().toAbsolutePath());
+            return false;
+        } catch (IOException x) {
+            // File permission problems are caught here.
+            System.err.println(x);
             return false;
         }
         return true;
