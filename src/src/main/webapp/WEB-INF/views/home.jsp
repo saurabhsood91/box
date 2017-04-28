@@ -71,6 +71,10 @@
         </form>
     </div>
     <div>
+        <h4>View Bill</h4>
+        <a href="/viewbill">View Bill</a>
+    </div>
+    <div>
         <ul>
             <form action="/returnToHome" method="post">
                 <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
