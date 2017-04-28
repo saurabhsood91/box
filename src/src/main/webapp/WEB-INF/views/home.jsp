@@ -52,7 +52,13 @@
             <input type="submit" value="Create Dir" />
         </form>
     </div>
-
+    <div>
+        <h4>View account usage</h4>
+        <form action="/viewUsage">
+            <input type="hidden" value="${user.userName}" name="userName"/>
+            <input type="submit" value="view" />
+        </form>
+    </div>
     <div>
         <h5>Directory Contents</h5>
         <ul>

@@ -153,4 +153,14 @@ public class UserActionsController {
 
         return "home";
     }
+    @RequestMapping(value="/viewUsage")
+    public String viewUsage(@RequestParam("userName")String userName, Model model)  {
+        User user = (User)session.getAttribute("user");
+        Path homeDirectory = user.getHomeDirectory();
+
+        model.addAttribute("maximumAvailableSpace", "placeholder");
+        model.addAttribute("usedSpace",FilesystemAPI.getUsedSpace(homeDirectory));
+        model.addAttribute("freeSpace", "placeholder");
+        return "viewUsage";
+    }
 }
