@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileSystem;
 import java.nio.file.Path;
 
 /**
@@ -229,9 +230,9 @@ public class UserActionsController {
         User user = (User)session.getAttribute("user");
         Path homeDirectory = user.getHomeDirectory();
 
-        model.addAttribute("maximumAvailableSpace", "placeholder");
+        model.addAttribute("maximumAvailableSpace", FilesystemAPI.getMaximumAvailableSpace(user));
         model.addAttribute("usedSpace",FilesystemAPI.getUsedSpace(homeDirectory));
-        model.addAttribute("freeSpace", "placeholder");
+        model.addAttribute("freeSpace", FilesystemAPI.getFreeSpace(homeDirectory,user));
         return "viewUsage";
     }
 
