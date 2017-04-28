@@ -117,5 +117,18 @@ public class FilesystemAPI {
         long size = FileUtils.sizeOfDirectory(directory);
         return convertSpaceToString(size);
     }
+    public static String getMaximumAvailableSpace(User user)
+    {
+        double gb = user.getPlan().getSpace();
+        return gb + " Gbs";
+    }
+    public static String getFreeSpace(Path homeDirectory, User user)
+    {
+        long availableSpace = (long)(user.getPlan().getSpace()*1024*1024*1024);
+        java.io.File directory = homeDirectory.toFile();
+        long usedSpace = FileUtils.sizeOfDirectory(directory);
+        long freeSpace = availableSpace - usedSpace;
+        return convertSpaceToString(freeSpace);
+    }
 
 }
