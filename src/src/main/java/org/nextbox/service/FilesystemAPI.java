@@ -43,7 +43,9 @@ public class FilesystemAPI {
     private static boolean upload(File file, Path path) throws FileNotFoundException {
         byte b[] = file.getBytes();
 
-        FileOutputStream fos = new FileOutputStream(path.toString() + file.getOriginalFilename());
+        Path newPath = Paths.get(path.toString(), file.getOriginalFilename());
+
+        FileOutputStream fos = new FileOutputStream(newPath.toString());
         try {
             fos.write(b);
             fos.close();
