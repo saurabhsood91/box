@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.io.FileUtils;
 /**
  * Created by saurabh on 3/27/17.
  */
@@ -94,6 +95,25 @@ public class FilesystemAPI {
             return false;
         }
         return  true;
+    }
+
+    public static  String convertSpaceToString(long numberOfBytes)
+    {
+        if(numberOfBytes > 1024*1024)
+            return (Double.toString(numberOfBytes/(1024.0*1024)) + " MBs");
+
+        if(numberOfBytes > 1024)
+            return (Double.toString(numberOfBytes/(1024.0)) + " KBs");
+
+        else
+            return (Long.toString(numberOfBytes) + " bytes");
+    }
+
+    public static String getUsedSpace(Path homeDirectory)
+    {
+        java.io.File directory = homeDirectory.toFile();
+        long size = FileUtils.sizeOfDirectory(directory);
+        return convertSpaceToString(size);
     }
 
 }
