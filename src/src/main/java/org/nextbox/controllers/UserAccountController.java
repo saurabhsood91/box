@@ -4,6 +4,7 @@ package org.nextbox.controllers;
  * Created by saurabh on 3/19/17.
  */
 
+import org.nextbox.managers.PlanManager;
 import org.nextbox.managers.UserManager;
 import org.nextbox.model.User;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.nextbox.service.*;
@@ -32,6 +34,9 @@ public class UserAccountController {
 
     @Autowired
     private UserManager userManager;
+
+    @Autowired
+    private PlanManager planManager;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, params = {"username", "password"})
     public String login(@RequestParam(value="username") String username, @RequestParam(value="password") String password, Model model) {
@@ -75,13 +80,44 @@ public class UserAccountController {
     @RequestMapping(value = "/finduser", method = RequestMethod.GET)
     public String findUser(@RequestParam("usernameToSearch") String usernameToSearch, @RequestParam("fileToShare") String fileToShare, Model model) {
         User userToShare = userManager.getUserByUsername(usernameToSearch);
-        if(userToShare != null) {
+        if (userToShare != null) {
             model.addAttribute("userToShare", userToShare.getUserName());
         } else {
             model.addAttribute("message", "No Username found");
         }
         model.addAttribute("fileToShare", fileToShare);
         return "sharefile";
+    }
+
+    @RequestMapping(value = "/createAccount", method = RequestMethod.POST, params = {"firstname","lastname","email",
+                "username", "password","selectedPlan"})
+    public String createAccount(@RequestParam(value="firstname") String firstName,@RequestParam(value="lastname")String lastName,
+                                 @RequestParam(value="email") String email,@RequestParam(value="username") String userName,
+                                 @RequestParam(value="password")String password, @RequestParam(value="selectedPlan")String planId ,Model model){
+        boolean success = false;
+        try{
+            User user = new User();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setUserName(userName);
+            user.setPassword(password);
+            user.setPlan(planManager.getPlanById(planId));
+            user.setActivation_status("active");
+            user.setRole("user");
+            success = userManager.createAccount(user,model);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return success ? "home" : "signup";
+    }
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public String  signup(Model model){
+
+        List plans = planManager.getAllPlanObjects();
+        model.addAttribute("plans", plans);
+
+        return "signup";
     }
 
 }

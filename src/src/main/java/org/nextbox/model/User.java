@@ -15,19 +15,7 @@ import java.sql.Timestamp;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 
 @Entity
@@ -76,6 +64,59 @@ public class User implements Serializable {
 
     @Column(name="password")
     String password;
+
+    @Column(name="firstname")
+    private String firstName;
+
+    @Column(name="lastname")
+    private String lastName;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
+
+    public String getActivation_status() {
+        return activation_status;
+    }
+
+    public void setActivation_status(String activation_status) {
+        this.activation_status = activation_status;
+    }
+
+    @Column(name="email")
+    private String email;
+
+    @OneToOne
+    @JoinColumn(name="plan_id")
+    private Plan plan;
 
     public Path getHomeDirectory() {
         return Paths.get(homeDirectory);
