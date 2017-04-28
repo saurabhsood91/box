@@ -117,7 +117,7 @@ public class UserActionsController {
     }
 
     @RequestMapping(value="/view")
-    public String View(@RequestParam("currentDirectory")String currentDirectory, @RequestParam("fileSelected")String fileSelected, Model model) throws IOException {
+    public String View(@RequestParam("fileSelected")String fileSelected, Model model) throws IOException {
         Filepath nPath = new Filepath();
         nPath.setPath(fileSelected);
 
@@ -125,13 +125,13 @@ public class UserActionsController {
             java.io.File[] directoryContents = FilesystemAPI.viewDir(nPath);
             model.addAttribute("searchResults",null);
             model.addAttribute("files", directoryContents);
-            System.out.println("It's a dir");
         }
 
         else if (nPath.pathIsPhoto()) {
             boolean viewed = FilesystemAPI.viewPhoto(nPath);
         }
-        else System.out.println("It's a file");
+
+        else;
 
         return "home";
     }

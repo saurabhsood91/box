@@ -53,10 +53,7 @@ public class Filepath {
         // Idea from http://stackoverflow.com/questions/9643228/test-if-file-is-an-image
         String mimetype= new MimetypesFileTypeMap().getContentType(f);
 
-        System.out.println(mimetype);
-
-
-        if(mimetype.startsWith("image/") || (mimetype.startsWith("application/octet-stream"))) {
+        if(mimetype.startsWith("image/") || f.toString().endsWith(".png")) {
             return true;
         }
         else {

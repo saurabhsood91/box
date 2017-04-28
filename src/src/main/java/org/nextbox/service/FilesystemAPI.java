@@ -180,11 +180,11 @@ public class FilesystemAPI {
         try {
             // This is from http://stackoverflow.com/questions/14353302/displaying-image-in-java
             BufferedImage img = ImageIO.read(path.toURL());
-            ImageIcon icon=new ImageIcon(img);
-            JFrame frame=new JFrame();
+            ImageIcon icon = new ImageIcon(img);
+            JFrame frame = new JFrame();
             frame.setLayout(new FlowLayout());
-            frame.setSize(600,500);
-            JLabel lbl=new JLabel();
+            frame.setSize(1200,800);
+            JLabel lbl = new JLabel();
             lbl.setIcon(icon);
             frame.add(lbl);
             frame.setVisible(true);

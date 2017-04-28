@@ -72,6 +72,17 @@ Stretch Functionalities:
 - Encrypt files
 
 
-Code Usage:
-Exception handling for delete/move/rename files and directories
-courtesy Oracle documentation: https://docs.oracle.com/javase/tutorial/essential/io/delete.html
+References (noted in code as well):
+- Hibernate:
+  http://www.roseindia.net/spring/spring4/login-form-using-spring-mvc-and-hibernate.shtml
+- Search file : 
+  http://stackoverflow.com/questions/15624226/java-search-for-files-in-a-directory
+- Download file :
+  http://howtodoinjava.com/spring/spring-mvc/spring-mvc-download-file-controller-example/
+- Exception handling for delete/move/rename files and directories:
+  Oracle documentation: https://docs.oracle.com/javase/tutorial/essential/io/delete.html
+- Checking MIMEtype for photo:
+  http://stackoverflow.com/questions/9643228/test-if-file-is-an-image
+- Displaying photo in JFrame:
+  http://stackoverflow.com/questions/14353302/displaying-image-in-java
+
