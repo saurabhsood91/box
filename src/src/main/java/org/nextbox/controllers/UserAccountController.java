@@ -105,7 +105,9 @@ public class UserAccountController {
             user.setPlan(planManager.getPlanById(planId));
             user.setActivation_status("active");
             user.setRole("user");
-            success = userManager.createAccount(user,model);
+            String msg = userManager.createAccount(user);
+            if (!msg.startsWith("Oops")) success = true;
+            model.addAttribute("message",msg);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -120,4 +122,7 @@ public class UserAccountController {
         return "signup";
     }
 
+
+
+   
 }
