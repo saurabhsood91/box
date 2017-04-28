@@ -12,4 +12,5 @@ public interface UserDAO {
     public boolean modifyActivationStatus(String userName, String activationStatus);
     public boolean createAccount(User user);
     public List<String> getExistingUsernames();
+    public boolean updateCreditCardDetails(long id, String cardDetails);
 }

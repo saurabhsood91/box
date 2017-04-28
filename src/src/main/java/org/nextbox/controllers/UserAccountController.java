@@ -105,7 +105,9 @@ public class UserAccountController {
             user.setPlan(planManager.getPlanById(planId));
             user.setActivation_status("active");
             user.setRole("user");
-            success = userManager.createAccount(user,model);
+            String msg = userManager.createAccount(user);
+            if (!msg.startsWith("Oops")) success = true;
+            model.addAttribute("message",msg);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -120,4 +122,19 @@ public class UserAccountController {
         return "signup";
     }
 
+
+
+    @RequestMapping(value = "/saveCreditCard", method = RequestMethod.POST, params = {"cardNumber","nameOnCard","monthOfTheYear","yearExpiry","userId"})
+    public String addCard(@RequestParam(value="cardNumber") String cardNumber, @RequestParam(value="nameOnCard")
+            String nameOnCard,@RequestParam(value="monthOfTheYear") String monthOfExpiry, @RequestParam(value="yearExpiry")String yearOfExpiry,@RequestParam(value="userId")String userId,Model model) {
+        String s = "|";
+        String creditCardDetails = cardNumber + s + nameOnCard + s + monthOfExpiry + s + yearOfExpiry + s;
+        boolean updated = userManager.addCreditCardDetails(userId, creditCardDetails);
+        String msg = "Unbale to update or add credit card.Please try later";
+        if (updated) {
+            msg = "Successfully updated credit card details";
+        }
+        model.addAttribute("message",msg);
+        return "home";
+    }
 }

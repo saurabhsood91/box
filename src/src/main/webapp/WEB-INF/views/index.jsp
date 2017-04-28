@@ -28,6 +28,5 @@
         <label>New User</label>
         <input type="submit" value="Create an Account"></input>
     </form>
-
 </body>
 </html>

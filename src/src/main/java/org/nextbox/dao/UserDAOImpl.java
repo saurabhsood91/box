@@ -82,4 +82,22 @@ public class UserDAOImpl implements UserDAO {
         return userNames;
     }
 
+    public boolean updateCreditCardDetails(long id, String cardDetails) {
+        Session session = sessionFactory.openSession();
+        boolean updated = false;
+        try {
+            String HQL_QUERY = "update User set cardDetails=? where id=?";
+            Query query = session.createQuery(HQL_QUERY);
+            query.setParameter(0, cardDetails);
+            query.setParameter(1, id);
+            query.executeUpdate();
+            updated = true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }
+        return updated;
+    }
+
 }

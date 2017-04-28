@@ -257,6 +257,11 @@ public class UserActionsController {
         model.addAttribute("message", "Plan Modified");
         return "home";
     }
+    @RequestMapping(value = "/creditcard", method = RequestMethod.POST,params = {"userId"})
+    public String creditCard(@RequestParam("userId") String userId,Model model){
+        model.addAttribute("userId",userId);
+        return "credit_card";
+    }
 }
 
 

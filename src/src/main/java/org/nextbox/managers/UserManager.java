@@ -31,18 +31,18 @@ public class UserManager {
 
     @Autowired
     private UserDAO userDAO;
-
+    public Integer[] n = {1,2,4,5,6};
     public User getUserByUsername(String username) {
         return userService.getUserByUsername(username);
     }
 
-    public boolean createAccount(User user,Model model) throws FileNotFoundException {
+    public String createAccount(User user) throws FileNotFoundException {
 //        user.setHomeDirectory("home");
 //        user.setRole("user");
 
 //        System.out.println(props.getUploadDir());
         String baseDir = props.getUploadDir();
-
+        String responseMsg = "Welcome to NextBox " + user.getUserName();
         Path basePath = Paths.get(baseDir);
         Path homeDir = Paths.get(baseDir, user.getUserName());
 
@@ -56,12 +56,12 @@ public class UserManager {
         }
         boolean isUserCreated = false;
         if (existingUser.contains(user.getUserName())){
-            model.addAttribute("message", "Oops!! Username taken. Please get creative");
+            responseMsg = "Oops!! Username taken. Please get creative";
         }else {
             isUserCreated = userService.createAccount(user);
-            if(!isUserCreated) model.addAttribute("message", "Oops!! System in limbo.Please try after sometime");
+            if(!isUserCreated) responseMsg = "Oops!! System in limbo.Please try after sometime";
         }
-        return isUserCreated;
+        return responseMsg;
     }
 
     private void initExistingUsers() {
@@ -73,4 +73,7 @@ public class UserManager {
         return userDAO.modifyActivationStatus(username,activationStatus);
     }
 
+    public boolean addCreditCardDetails(String userId, String cardDetails){
+        return userDAO.updateCreditCardDetails(Long.parseLong(userId),cardDetails);
+    }
 }
