@@ -148,6 +148,17 @@ public class User implements Serializable {
     @Column(name="activation_status")
     String activation_status;
 
+    @Column(name = "card_details")
+    String cardDetails;
+
+    public String getCardDetails() {
+        return cardDetails;
+    }
+
+    public void setCardDetails(String cardDetails) {
+        this.cardDetails = cardDetails;
+    }
+
     public boolean isActive() {
         return this.getactivation_status().compareTo("active") == 0;
     }

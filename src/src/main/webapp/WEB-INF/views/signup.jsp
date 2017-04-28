@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: aniru
@@ -12,6 +13,8 @@
     <title>Create Account</title>
 </head>
 <body>
+
+
     <form action="/createAccount" method="post">
         <label for="firstname">First Name</label>
         <input type="text" name="firstname"></input><br>
@@ -30,9 +33,9 @@
             <%--<option value="3">Plan B - 8GB($10 per month)</option>--%>
             <%--<option value="4">Plan C - 32GB($15 per month)</option>--%>
             <%--<option value="5">Plan D - 64GB($20 per month)</option>--%>
-            <c:forEach var="plan" items="${plans}">
+                <<c:forEach var="plan" items="${plans}">
                 <option value="${plan.id}">Rate:\$${plan.rate}, Space: ${plan.space} GB</option>
-            </c:forEach>
+                </c:forEach>
         </select><br>
         <input type="submit" value="submit"></input>
 
