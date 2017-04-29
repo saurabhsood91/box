@@ -24,5 +24,9 @@ public class UserServiceImpl implements UserService {
         return userDAO.createAccount(user);
     }
 
+    public boolean createAdminAccount(User user) {
+        return userDAO.createAdminAccount(user);
+    }
+
     public List<String> getExistingUsers(){return userDAO.getExistingUsernames();}
 }

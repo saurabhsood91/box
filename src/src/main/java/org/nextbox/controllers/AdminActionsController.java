@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 /**
  * Created by saurabh on 4/23/17.
  */
@@ -30,7 +32,7 @@ public class AdminActionsController {
     @Autowired
     private UserManager userManager;
 
-    @RequestMapping(value = "/admin/addplan", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/addplan", method = GET)
     public String createPlan() {
         return "addplan";
     }
@@ -83,14 +85,14 @@ public class AdminActionsController {
         return "admin_home";
     }
 
-    @RequestMapping(value = "/admin/modifyplan", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/modifyplan", method = GET)
     public String updatePlan(Model model) {
         List plans = planManager.getAllPlans();
         model.addAttribute("plans", plans);
         return "modifyplan";
     }
 
-    @RequestMapping(value = "/admin/plan/details", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/plan/details", method = GET)
     public String planDetails(@RequestParam("id") String id, Model model) {
         // Get plan details by ID:
         Plan plan = planManager.getPlanById(id);
@@ -108,7 +110,7 @@ public class AdminActionsController {
     }
 
 
-    @RequestMapping(value = "/admin/changeActivationStatus", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/changeActivationStatus", method = GET)
     public String changeActivationStatus() {
         return "changeActivationStatus";
     }
@@ -132,4 +134,35 @@ public class AdminActionsController {
         return "admin_home";
     }
 
+    @RequestMapping(value = "/admin/createAdmin", method = GET)
+    public String createAdmin(Model model){
+        List plans = planManager.getAllPlanObjects();
+        model.addAttribute("plans", plans);
+        return "createAdmin";
+    }
+
+    @RequestMapping(value = "/createAdmin", method = RequestMethod.POST, params = {"firstname","lastname","email",
+            "username", "password","selectedPlan"})
+    public String createAdminAccount(@RequestParam(value="firstname") String firstName,@RequestParam(value="lastname")String lastName,
+                                     @RequestParam(value="email") String email,@RequestParam(value="username") String userName,
+                                     @RequestParam(value="password")String password, @RequestParam(value="selectedPlan")String planId ,Model model) {
+        boolean success = false;
+        try {
+            User user = new User();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setUserName(userName);
+            user.setPassword(password);
+            user.setPlan(planManager.getPlanById(planId));
+            user.setActivation_status("active");
+            user.setRole("admin");
+            String msg = userManager.createAdminAccount(user);
+            if (!msg.startsWith("Oops")) success = true;
+            model.addAttribute("message", msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return success ? "admin_home" : "createAdmin";
+    }
 }

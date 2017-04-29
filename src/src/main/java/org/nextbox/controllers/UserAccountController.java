@@ -107,7 +107,7 @@ public class UserAccountController {
             user.setRole("user");
             String msg = userManager.createAccount(user);
             if (!msg.startsWith("Oops")) success = true;
-            model.addAttribute("message",msg);
+            model.addAttribute("message", userManager.createAccount(user));
         }catch (Exception e){
             e.printStackTrace();
         }

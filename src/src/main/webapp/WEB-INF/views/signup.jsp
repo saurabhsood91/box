@@ -35,7 +35,7 @@
             <%--<option value="5">Plan D - 64GB($20 per month)</option>--%>
                 <<c:forEach var="plan" items="${plans}">
                 <option value="${plan.id}">Rate:\$${plan.rate}, Space: ${plan.space} GB</option>
-                </c:forEach>
+            </c:forEach>
         </select><br>
         <input type="submit" value="submit"></input>
 
