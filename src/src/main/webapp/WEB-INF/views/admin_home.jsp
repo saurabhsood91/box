@@ -21,6 +21,7 @@
         <li><a href="/admin/addplan">Add Plan</a></li>
         <li><a href="/admin/modifyplan">Modify Plan</a></li>
         <li><a href="/admin/changeActivationStatus">Change Activation Status</a></li>
+        <li><a href="/admin/createAdmin">Create an Admin Account</a></li>
     </ul>
 
 </body>

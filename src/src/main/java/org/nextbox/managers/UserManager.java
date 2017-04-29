@@ -76,4 +76,32 @@ public class UserManager {
     public boolean addCreditCardDetails(String userId, String cardDetails){
         return userDAO.updateCreditCardDetails(Long.parseLong(userId),cardDetails);
     }
+
+    public String createAdminAccount(User user) throws FileNotFoundException {
+//        user.setHomeDirectory("home");
+//        user.setRole("user");
+
+//        System.out.println(props.getUploadDir());
+        String baseDir = props.getUploadDir();
+        String responseMsg = "Welcome to NextBox " + user.getUserName();
+        Path basePath = Paths.get(baseDir);
+        Path homeDir = Paths.get(baseDir, user.getUserName());
+
+        Path newPath = Paths.get(basePath.toString(), user.getUserName());
+
+        FilesystemAPI.createdir(newPath);
+        user.setHomeDirectory(homeDir.toAbsolutePath().toString());
+
+        if (existingUser == null || existingUser.isEmpty()){
+            initExistingUsers();
+        }
+        boolean isUserCreated = false;
+        if (existingUser.contains(user.getUserName())){
+            responseMsg = "Oops!! Username taken. Please get creative";
+        }else {
+            isUserCreated = userService.createAccount(user);
+            if(!isUserCreated) responseMsg = "Oops!! System in limbo.Please try after sometime";
+        }
+        return responseMsg;
+    }
 }

@@ -72,6 +72,21 @@ public class UserDAOImpl implements UserDAO {
         return success;
     }
 
+    public boolean createAdminAccount(User user) {
+        boolean success = false;
+        Session session = sessionFactory.openSession();
+        try {
+            session.save(user);
+            success = true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return success;
+    }
+
     public List<String> getExistingUsernames(){
         Session session = sessionFactory.openSession();
         List<User> users = (List<User>) session.createCriteria(User.class).list();

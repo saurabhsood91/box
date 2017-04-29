@@ -11,5 +11,6 @@ public interface UserService {
     public User getUserByUsername(String username);
 
     public boolean createAccount(User user);
+    public boolean createAdminAccount(User user);
     public List<String> getExistingUsers();
 }
