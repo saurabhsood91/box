@@ -235,6 +235,8 @@ public class FilesystemAPI {
         long availableSpace = (long)(user.getPlan().getSpace()*1024*1024*1024);
         java.io.File directory = homeDirectory.toFile();
         long usedSpace = FileUtils.sizeOfDirectory(directory);
+        if(usedSpace == 0)
+            return user.getPlan().getSpace() + "Gbs";
         long freeSpace = availableSpace - usedSpace;
         return convertSpaceToString(freeSpace);
     }
