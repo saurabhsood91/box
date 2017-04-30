@@ -14,8 +14,15 @@
     <title>Nextbox</title>
 </head>
 <body>
+
     <h1>${message}</h1>
     <h2>${user.userName}</h2>
+
+    <form action="/creditcard" method="post">
+        <input type="hidden" name="userId" value="${user.id}"/>
+        <input type="submit" value="Add Credit Card"></input>
+    </form>
+
     <h3>Change Plan</h3>
     <ul>
         <li><a href="/userChangePlan">Modify Plan</a></li>
@@ -57,6 +64,17 @@
         </form>
     </div>
     <div>
+        <h4>View account usage</h4>
+        <form action="/viewUsage">
+            <input type="hidden" value="${user.userName}" name="userName"/>
+            <input type="submit" value="view" />
+        </form>
+    </div>
+    <div>
+        <h4>View Bill</h4>
+        <a href="/viewbill">View Bill</a>
+    </div>
+    <div>
         <ul>
             <form action="/returnToHome" method="post">
                 <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
@@ -87,6 +105,10 @@
                         <input type="hidden" value="${currentDirectory}" name="currentDirectory"/>
                         <input type="submit" value="download"/>
                     </form>
+                    <form action="/sharefile" method="get">
+                        <input type="hidden" value="${file}" name="fileToShare" />
+                    <input type="submit" value="Share File" />
+                </form>
             </c:forEach>
         </ul>
     </div>

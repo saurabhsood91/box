@@ -12,6 +12,7 @@ public interface PlanDAO {
     public Plan getPlan(double ratePerGB, double maxSpace);
 
     List getAllPlans();
+    List getAllPlanObjects();
 
     Plan getPlanById(String id);
 

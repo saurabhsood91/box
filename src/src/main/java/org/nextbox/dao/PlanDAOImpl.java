@@ -52,6 +52,12 @@ public class PlanDAOImpl implements PlanDAO {
         return plans;
     }
 
+    public List getAllPlanObjects() {
+        Session session = sessionFactory.openSession();
+        List plans = session.createCriteria(Plan.class).list();
+        return plans;
+    }
+
     public Plan getPlanById(String id) {
         Session session = sessionFactory.openSession();
         long planId = Integer.parseInt(id);

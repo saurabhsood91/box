@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.validation.constraints.Null;
 
+import org.apache.commons.io.FileUtils;
 /**
  * Created by saurabh on 3/27/17.
  */
@@ -54,7 +55,9 @@ public class FilesystemAPI {
     private static boolean upload(File file, Path path) throws FileNotFoundException {
         byte b[] = file.getBytes();
 
-        FileOutputStream fos = new FileOutputStream(path.toString() + file.getOriginalFilename());
+        Path newPath = Paths.get(path.toString(), file.getOriginalFilename());
+
+        FileOutputStream fos = new FileOutputStream(newPath.toString());
         try {
             fos.write(b);
             fos.close();
@@ -75,7 +78,7 @@ public class FilesystemAPI {
         return files;
     }
 
-    private static boolean createdir(Path newDir) throws FileNotFoundException {
+    public static boolean createdir(Path newDir) throws FileNotFoundException {
         try {
             Files.createDirectory(newDir.toAbsolutePath());
         } catch (IOException e) {
@@ -171,6 +174,7 @@ public class FilesystemAPI {
         return  true;
     }
 
+
     public static java.io.File[] viewDir(Filepath path) throws FileNotFoundException, IOException {
         java.io.File[] directoryContents = FilesystemService.getDirContents(path.toAbs());
         return directoryContents;
@@ -194,6 +198,38 @@ public class FilesystemAPI {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static  String convertSpaceToString(long numberOfBytes)
+    {
+        if(numberOfBytes > 1024*1024)
+            return (Double.toString(numberOfBytes/(1024.0*1024)) + " MBs");
+
+        if(numberOfBytes > 1024)
+            return (Double.toString(numberOfBytes/(1024.0)) + " KBs");
+
+        else
+            return (Long.toString(numberOfBytes) + " bytes");
+    }
+
+    public static String getUsedSpace(Path homeDirectory)
+    {
+        java.io.File directory = homeDirectory.toFile();
+        long size = FileUtils.sizeOfDirectory(directory);
+        return convertSpaceToString(size);
+    }
+    public static String getMaximumAvailableSpace(User user)
+    {
+        double gb = user.getPlan().getSpace();
+        return gb + " Gbs";
+    }
+    public static String getFreeSpace(Path homeDirectory, User user)
+    {
+        long availableSpace = (long)(user.getPlan().getSpace()*1024*1024*1024);
+        java.io.File directory = homeDirectory.toFile();
+        long usedSpace = FileUtils.sizeOfDirectory(directory);
+        long freeSpace = availableSpace - usedSpace;
+        return convertSpaceToString(freeSpace);
     }
 
 }

@@ -2,9 +2,11 @@ package org.nextbox.controllers;
 
 import org.nextbox.managers.PlanManager;
 import org.nextbox.model.File;
+import org.nextbox.managers.UserManager;
 import org.nextbox.model.Filepath;
 import org.nextbox.model.Plan;
 import org.nextbox.model.User;
+import org.nextbox.service.BillingService;
 import org.nextbox.service.FilesystemAPI;
 import org.nextbox.service.FilesystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileSystem;
 import java.nio.file.Path;
 
 /**
@@ -34,6 +37,9 @@ public class UserActionsController {
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private UserManager userManager;
 
     @RequestMapping(value="/upload", method = RequestMethod.POST)
     public String uploadFile(@RequestParam("uploadedfile")MultipartFile file, @RequestParam("currentDirectory")String currentDirectory, Model model) throws FileNotFoundException {
@@ -193,6 +199,44 @@ public class UserActionsController {
         boolean downloaded =  FilesystemAPI.download(user,fileSelected,response);
     }
 
+    @RequestMapping(value = "/sharefile", method = RequestMethod.GET)
+    public String shareFile(@RequestParam("fileToShare") String fileToShare, Model model) {
+        // Get the user from the sesion
+        User user = (User)session.getAttribute("user");
+        model.addAttribute("fileToShare", fileToShare);
+        return "sharefile";
+    }
+
+    @RequestMapping(value="/share", method=RequestMethod.POST)
+    public String share(@RequestParam("fileToShare") String fileToShare, @RequestParam("userToShare") String userToShare, Model model) throws IOException {
+        User user = (User)session.getAttribute("user");
+        User secondUser = userManager.getUserByUsername(userToShare);
+        user.shareFile(fileToShare, secondUser);
+
+        // Set model properties
+        model.addAttribute("user", user);
+        model.addAttribute("currentDirectory", user.getHomeDirectory());
+
+        // Get home directory
+        Path homeDirectory = user.getHomeDirectory();
+        java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
+
+        model.addAttribute("files", homeDirectoryContents);
+        model.addAttribute("message", "File shared with " + userToShare);
+
+        return "home";
+    }
+    @RequestMapping(value="/viewUsage")
+    public String viewUsage(@RequestParam("userName")String userName, Model model)  {
+        User user = (User)session.getAttribute("user");
+        Path homeDirectory = user.getHomeDirectory();
+
+        model.addAttribute("maximumAvailableSpace", FilesystemAPI.getMaximumAvailableSpace(user));
+        model.addAttribute("usedSpace",FilesystemAPI.getUsedSpace(homeDirectory));
+        model.addAttribute("freeSpace", FilesystemAPI.getFreeSpace(homeDirectory,user));
+        return "viewUsage";
+    }
+
     @RequestMapping(value="/userChangePlan")
     public String userChangePlan(Model model) {
         User user = (User) session.getAttribute("user");
@@ -214,6 +258,21 @@ public class UserActionsController {
         model.addAttribute("message", "Plan Modified");
         return "home";
     }
+    @RequestMapping(value = "/creditcard", method = RequestMethod.POST,params = {"userId"})
+    public String creditCard(@RequestParam("userId") String userId,Model model){
+        model.addAttribute("userId",userId);
+        return "credit_card";
+    }
+
+    @RequestMapping(value = "/viewbill", method=RequestMethod.GET)
+    public String viewBill(Model model) {
+        User user = (User) session.getAttribute("user");
+        String bill = BillingService.calculateBillForUser(user);
+        model.addAttribute("bill", bill);
+        model.addAttribute("currentDirectory", user.getHomeDirectory().toString());
+        return "bill";
+    }
+
 }
 
 

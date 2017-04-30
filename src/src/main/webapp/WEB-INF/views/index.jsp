@@ -24,5 +24,9 @@
         <input type="reset" value="Clear">
     </form>
 
+    <form action="/signup" method="post">
+        <label>New User</label>
+        <input type="submit" value="Create an Account"></input>
+    </form>
 </body>
 </html>

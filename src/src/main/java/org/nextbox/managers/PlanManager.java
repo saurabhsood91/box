@@ -47,4 +47,8 @@ public class PlanManager {
         double planSpace = Double.parseDouble(space);
         return planDAO.modifyPlan(planId, planRate, planSpace);
     }
+
+    public List getAllPlanObjects() {
+        return planDAO.getAllPlanObjects();
+    }
 }
