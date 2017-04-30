@@ -4,17 +4,19 @@ package org.nextbox.service;
 import org.apache.commons.io.FileUtils;
 import org.nextbox.model.Filepath;
 import org.nextbox.model.User;
-import org.nextbox.model.Directory;
 import org.nextbox.model.File;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.*;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import javax.validation.constraints.Null;
 
 import org.apache.commons.io.FileUtils;
 /**
@@ -102,7 +104,7 @@ public class FilesystemAPI {
                     int recurse = JOptionPane.showConfirmDialog(null, "Recursively delete directory?", "Warning", JOptionPane.YES_NO_OPTION);
                     if (recurse == JOptionPane.YES_OPTION) {
                         try {
-                            FileUtils.deleteDirectory(toDelete.fptoFile());
+                            FileUtils.deleteDirectory(toDelete.toFile());
                         } catch (NoSuchFileException z) {
                             System.err.format("%s: no such" + " file or directory%n", toDelete.getPath().toAbsolutePath());
                             return false;
@@ -170,6 +172,32 @@ public class FilesystemAPI {
             return false;
         }
         return  true;
+    }
+
+
+    public static java.io.File[] viewDir(Filepath path) throws FileNotFoundException, IOException {
+        java.io.File[] directoryContents = FilesystemService.getDirContents(path.toAbs());
+        return directoryContents;
+    }
+
+    public static boolean viewPhoto(Filepath path) throws FileNotFoundException, IOException {
+        try {
+            // This is from http://stackoverflow.com/questions/14353302/displaying-image-in-java
+            BufferedImage img = ImageIO.read(path.toURL());
+            ImageIcon icon = new ImageIcon(img);
+            JFrame frame = new JFrame();
+            frame.setLayout(new FlowLayout());
+            frame.setSize(1200,800);
+            JLabel lbl = new JLabel();
+            lbl.setIcon(icon);
+            frame.add(lbl);
+            frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static  String convertSpaceToString(long numberOfBytes)

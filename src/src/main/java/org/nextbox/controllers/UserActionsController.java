@@ -123,23 +123,23 @@ public class UserActionsController {
     }
 
     @RequestMapping(value="/view")
-    public String View(@RequestParam("currentDirectory")String currentDirectory, @RequestParam("fileSelected")String fileSelected, Model model){
+    public String View(@RequestParam("fileSelected")String fileSelected, Model model) throws IOException {
         Filepath nPath = new Filepath();
         nPath.setPath(fileSelected);
 
         if (nPath.pathIsDir()) {
-            Path newDir = nPath.toAbs();
-            java.io.File[] directoryContents = FilesystemService.getDirContents(newDir);
-
-            User user = (User) session.getAttribute("user");
+            java.io.File[] directoryContents = FilesystemAPI.viewDir(nPath);
             model.addAttribute("searchResults",null);
             model.addAttribute("files", directoryContents);
+        }
 
-            return "home";
+        else if (nPath.pathIsPhoto()) {
+            boolean viewed = FilesystemAPI.viewPhoto(nPath);
         }
-        else {
-            return "home";
-        }
+
+        else;
+
+        return "home";
     }
 
     @RequestMapping(value="/delete")
