@@ -253,7 +253,7 @@ public class UserActionsController {
     @RequestMapping(value="/userPlanChange", method = RequestMethod.POST)
     public String userModifyPlan(@RequestParam("space") String space, Model model) {
         User user = (User) session.getAttribute("user");
-        long id = user.getId();
+        long id = user.getPlan().getId();
         Plan plan = planManager.getPlanById(String.valueOf(id));
         Double rate = plan.getRate();
         planManager.modifyPlan(String.valueOf(id), String.valueOf(rate), space);
