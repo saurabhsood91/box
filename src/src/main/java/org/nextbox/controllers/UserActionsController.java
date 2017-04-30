@@ -162,6 +162,7 @@ public class UserActionsController {
 
         java.io.File[] directoryContents = FilesystemService.getDirContents(homeDirectory);
         model.addAttribute("files", directoryContents);
+        model.addAttribute("currentDirectory", user.getHomeDirectory().toString());
         //model.addAttribute("currentDirectory", currentDirectory);
         return "home";
     }
@@ -185,6 +186,7 @@ public class UserActionsController {
 
         java.io.File[] directoryContents = FilesystemService.getDirContents(homeDirectory);
         model.addAttribute("files", directoryContents);
+        model.addAttribute("currentDirectory", user.getHomeDirectory().toString());
 
         return "home";
     }
