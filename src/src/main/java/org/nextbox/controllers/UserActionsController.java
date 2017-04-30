@@ -242,7 +242,7 @@ public class UserActionsController {
     @RequestMapping(value="/userChangePlan")
     public String userChangePlan(Model model) {
         User user = (User) session.getAttribute("user");
-        long id = user.getId();
+        long id = user.getPlan().getId();
         Plan plan = planManager.getPlanById(String.valueOf(id));
         model.addAttribute("plan", plan);
         model.addAttribute("rate", String.valueOf(plan.getRate()));
