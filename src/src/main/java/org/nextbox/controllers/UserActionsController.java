@@ -88,7 +88,7 @@ public class UserActionsController {
         Path homeDirectory = user.getHomeDirectory();
         java.io.File[] homeDirectoryContents = FilesystemService.getDirContents(homeDirectory);
 
-        model.addAttribute("currentDirectory",currentDirectory);
+        model.addAttribute("currentDirectory", homeDirectory.toString());
         model.addAttribute("files", homeDirectoryContents);
 
         return "home";
