@@ -124,6 +124,13 @@ public class FilesystemAPI {
                 }
                 return true;
             }
+
+            try {
+                Files.delete(toDelete.getPath().toAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             return true;
         }
         else
