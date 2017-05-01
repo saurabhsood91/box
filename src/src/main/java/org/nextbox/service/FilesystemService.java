@@ -14,6 +14,7 @@ public class FilesystemService {
     }
     public static void findFile(String name,File file, ArrayList<File> result)
     {
+        //This is from http://stackoverflow.com/questions/15624226/java-search-for-files-in-a-directory
         if(name == null || name.length() == 0)
             return;
         File[] list = file.listFiles();
@@ -22,16 +23,12 @@ public class FilesystemService {
             {
                 if (fil.isDirectory())
                 {
-                   // result.addAll(findFile(name,fil,result));
-                            //+= findFile(name,fil,result);
                     findFile(name,fil,result);
                 }
                 else if (fil.getName().toLowerCase().contains(name.toLowerCase()))
                 {
                     result.add(fil);
-                            //fil.getParentFile() + "\\" + fil.getName() + "<br/>" + result  ;
                 }
             }
-        //return result;
     }
 }

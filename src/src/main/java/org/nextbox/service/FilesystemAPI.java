@@ -162,6 +162,7 @@ public class FilesystemAPI {
 
     public static boolean download(User user, String path, HttpServletResponse response)
     {
+        //This is from http://howtodoinjava.com/spring/spring-mvc/spring-mvc-download-file-controller-example/
         Path file = Paths.get(path);
 
         if(file.toFile().isDirectory())
